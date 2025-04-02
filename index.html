@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wastelands</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1><img class="imgLogo" src="logo.png"></h1>
+        <div class="header-buttons">
+          <button id="musicButton" class="btn btn-blue" title="Toggle background music on/off">
+            <span id="musicIcon">🔇</span> 
+          </button>
+		  <button id="legalButton" class="btn btn-blue" title="Imprint">
+            <span id="legalIcon">⚖️</span> 
+          </button>
+          <button id="saveButton" class="btn" title="Save">💾</button>
+		  <button id="resetButton" class="btn btn-red" title="Reset Game">🔃</button>
+		  <button id="backgroundStoryButton" class="btn" title="Background Story">📖</button>
+        </div>
+      </header>
+	  
+	  <div class="wcard">
+  <div class="wcontainer">
+    <div class="cloud front">
+      <span class="left-front"></span>
+      <span class="right-front"></span>
+    </div>
+    <span class="sun sunshine"></span>
+    <span class="sun"></span>
+    <div class="cloud back">
+      <span class="left-back"></span>
+      <span class="right-back"></span>
+    </div>
+  </div>
+
+  <div class="wcard-header">
+    <span id="locale"></span>
+    <span id="today"></span>
+	<span class="wind" id="windSP"></span>
+	<span class="condition" id="skyCond"></span>
+  </div>
+
+  <span class="temp" id="temperature"></span>
+  
+
+  <div class="temp-scale">
+    <span>Celsius</span>
+  </div>
+</div>
+
+ <!-- Logs & More -->
+      <section class="logs">
+        <h2>Logs & More</h2>
+        <div id="logsContainer" class="logs-container">
+		  <button id="logButton" class="btn" title="What happened to me...?">📋</button>
+		  <button id="achButton" class="btn" title="Achievements">🏆</button>
+		</div>
+      </section>
+
+ <!-- Buffs/Debuffs Container -->
+      <section class="buffs-debuffs">
+        <h2>Buffs & Debuffs</h2>
+        <div id="buffsDebuffsContainer" class="buffs-debuffs-container"></div>
+      </section>
+	  
+	  <!-- Resource Budget Overview -->
+      <section class="resource-budget">
+        <h2>Resource Budget Overview</h2>
+        <div id="resourceBudgetContainer" class="resource-budget-container"></div>
+      </section>
+	  
+	  <!-- Electricity Bar -->
+      <section id="electricitySection" class="electricity-section" style="display: none;">
+        <h2>Electricity</h2>
+        <div class="electricity-bar-container">
+          <div id="electricityBar" class="electricity-bar"></div>
+          <span id="electricityLabel">0 / 100</span>
+        </div>
+      </section>
+	  
+<!-- Civilization Resources -->
+<section id="civilizationSection" class="civilization-section" style="display: none;">
+  <h2>Civilization Resources</h2>
+  <div class="civilization-resource">
+    <h3>Research Points</h3>
+    <div class="civilization-bar-container">
+      <div id="researchBar" class="civilization-bar"></div>
+      <span id="researchLabel">0 / 100</span>
+    </div>
+  </div>
+  <div class="civilization-resource">
+    <h3>Administrative Points</h3>
+    <div class="civilization-bar-container">
+      <div id="adminBar" class="civilization-bar"></div>
+      <span id="adminLabel">0 / 100</span>
+    </div>
+  </div>
+</section>
+
+<!-- Expeditions -->
+<div id="expeditionSection" style="display: none;">
+  <h2>Expedition HQ</h2>
+  <div id="expeditionsContainer" class="cards-container expedition-grid"></div>
+</div>
+
+<!-- Researches Section -->
+<section class="researches" id="researchesContainer" style="display: none;">
+  <h2>Researches</h2>
+  <div class="cards-container">
+    <!-- Research cards will be rendered here -->
+  </div>
+</section>
+
+
+<!-- Notification Overlay -->
+      <div id="notificationOverlay" class="notification-overlay" style="display: none;">
+        <div class="notification-card">
+          <p id="notificationMessage"></p>
+          <button id="notificationDismiss" class="btn btn-blue">Ok</button>
+        </div>
+      </div>
+	  
+	  <!-- New Large Notification Overlay -->
+<div id="largeNotificationOverlay" class="notification-overlay" style="display: none;">
+  <div class="large-notification-card">
+    <p id="largeNotificationMessage"></p>
+    <button id="largeNotificationDismiss" class="btn btn-blue">Ok</button>
+  </div>
+</div>
+
+<!-- Achievements Popup -->
+<div id="achievementsPopup" class="popup" style="display: none;">
+  <div class="popup-content">
+    <h2>Achievements (<span id="achievementsTotal">0</span> total)</h2>
+    <div id="achievementsGrid" class="achievements-grid"></div>
+    <button id="closeAchievementsPopup" class="btn">Close</button>
+  </div>
+</div>
+
+      <div class="game-grid">
+        <section class="resources">
+          <h2>Resources</h2>
+          <div id="resourcesContainer" class="resCards"></div>
+        </section>
+		
+		<section class="improvements">
+          <h2>Improvements</h2>
+          <div id="improvementsContainer" class="cards-container"></div>
+        </section>
+
+        <section class="buildings">
+          <h2>Buildings</h2>
+          <div id="buildingsContainer" class="cards-container"></div>
+        </section>
+      </div>
+
+      <section class="save-management">
+        <h2>Save Data Management</h2>
+        <div class="save-controls">
+          <button id="exportButton" class="btn btn-green">Export Save</button>
+          <div class="import-container">
+            <input type="text" id="importInput" placeholder="Paste save data here..." />
+            <button id="importButton" class="btn btn-yellow">Import Save</button>
+			<button id="cheatButton" class="btn btn-invisible"></button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <audio id="bgMusic" loop>
+      <source src="Wastelands.mp3" type="audio/mpeg">
+    </audio>
+    <script src="main.js"></script>
+  </body>
+</html>

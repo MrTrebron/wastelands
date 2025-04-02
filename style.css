@@ -1,0 +1,892 @@
+:root {
+  --bg-dark: #111827;
+  --bg-card: #1f2937;
+  --text: #ffffff;
+  --text-secondary: #9ca3af;
+  --blue: #2563eb;
+  --blue-hover: #1d4ed8;
+  --green: #059669;
+  --green-hover: #047857;
+  --yellow: #d97706;
+  --yellow-hover: #b45309;
+  --red: #dc2626;
+  --red-hover: #b91c1c;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text);
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 98%;
+  margin: 0 auto;
+  padding: 0.5rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-right: 18px;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.btn {
+  background-color: var(--blue);
+  color: var(--text);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.975rem;
+  transition: background-color 0.2s;
+}
+
+.btn:hover {
+  background-color: var(--blue-hover);
+}
+
+.btn-green {
+  background-color: var(--green);
+}
+
+.btn-green:hover {
+  background-color: var(--green-hover);
+}
+
+.btn-yellow {
+  background-color: var(--yellow);
+}
+
+.btn-yellow:hover {
+  background-color: var(--yellow-hover);
+}
+
+.btn-red {
+  background-color: var(--red);
+}
+
+.btn-red:hover {
+  background-color: var(--red-hover);
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr 3fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+#buildingsContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 1rem;
+}
+
+.resCards {
+  display: grid;
+  grid-template-columns: 1fr; /* Two equal columns */
+  gap: 1rem;
+}
+
+.card {
+  background-color: var(--bg-card);
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.resource-info, .building-info {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.cost-list {
+  margin: 0.5rem 0;
+  list-style: none;
+}
+
+.cost-item {
+  color: var(--text-secondary);
+}
+
+.cost-item.affordable {
+  color: var(--green);
+}
+
+.cost-item.not-affordable {
+  color: var(--red);
+}
+
+.save-management {
+  background-color: var(--bg-card);
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.save-controls {
+  display: flex;
+  gap: 1rem;
+}
+
+.import-container {
+  display: flex;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+input {
+  flex: 1;
+  padding: 0.5rem;
+  background-color: var(--bg-dark);
+  border: 1px solid var(--text-secondary);
+  border-radius: 0.375rem;
+  color: var(--text);
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.imgLogo { width: 600px; height: auto; } 
+
+/* Notification Styles */
+.notification-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.notification-card {
+  background-color: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+.notification-card p {
+  color: var(--text);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.notification-card .btn {
+  background-color: var(--blue);
+}
+
+.notification-card .btn:hover {
+  background-color: var(--blue-hover);
+}
+
+/* New Large Notification Styles */
+.large-notification-card {
+  background-color: var(--bg-card);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  text-align: left;
+  max-width: 700px; /* Wider than normal */
+  width: 90%;
+  max-height: 80vh; /* Taller, but with a max height */
+  overflow-y: auto; /* Scrollable if content is too long */
+  border: 1px solid #555; /* Subtle border */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Soft shadow */
+}
+
+.large-notification-card p {
+  color: var(--text);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.large-notification-card .btn {
+  background-color: var(--blue);
+}
+
+.large-notification-card .btn:hover {
+  background-color: var(--blue-hover);
+}
+
+.large-notification-card strong {
+  display: block;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #ddd;
+}
+
+/* Buffs/Debuffs Styles */
+.buffs-debuffs {
+  margin-bottom: 2rem;
+}
+
+.buffs-debuffs-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.buff-debuff {
+  background-color: var(--bg-card);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  flex: 1;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.buff-debuff.buff {
+  border: 2px solid var(--green);
+}
+
+.buff-debuff.debuff {
+  border: 2px solid var(--red);
+}
+
+.buff-debuff p {
+  color: var(--text);
+  font-size: 0.875rem;
+}
+
+/* Electricity Bar Styles */
+.electricity-section {
+  margin-bottom: 2rem;
+}
+
+.electricity-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.electricity-bar {
+  flex: 1;
+  height: 20px;
+  background-color: var(--bg-card);
+  border-radius: 0.375rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.electricity-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: var(--width, 0%);
+  transition: width 0.3s ease;
+}
+
+.electricity-bar.green::before {
+  background-color: var(--green);
+}
+
+.electricity-bar.yellow::before {
+  background-color: var(--yellow);
+}
+
+.electricity-bar.red::before {
+  background-color: var(--red);
+}
+
+#electricityLabel {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+/* Resource Budget Styles */
+.resource-budget {
+  margin-bottom: 2rem;
+}
+
+.resource-budget-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.resource-budget-item {
+  background-color: var(--bg-card);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  flex: 1;
+  min-width: 300px;
+  max-width: 450px;
+}
+
+.resource-budget-item h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.resource-budget-item p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.resource-budget-item ul {
+  list-style: none;
+  margin: 0.5rem 0;
+}
+
+.resource-budget-item li {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.net-positive {
+  color: var(--green);
+}
+
+.net-negative {
+  color: var(--red);
+}
+
+.net-neutral {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .imgLogo { max-width: 180px; height: auto; } 
+  
+  .btn {
+    padding: 0.3rem 0.6rem;
+    border: none;
+    border-radius: 0.325rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+  }
+
+  .cards-container {
+    grid-template-columns: 1fr; /* Single column on mobile */
+  }
+  
+  .game-grid, #buildingsContainer {
+    grid-template-columns: 1fr;
+  }
+  
+  .container {
+    max-width: 94%;
+    margin: 0 auto;
+    padding: 0.35rem;
+  }
+
+  .wcard {
+    max-width: 380px;
+    max-height: 215px;
+  }
+
+  .buffs-debuffs-container {
+    flex-direction: column;
+  }
+
+  .buff-debuff {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .resource-budget-container {
+    flex-direction: column;
+  }
+
+  .resource-budget-item {
+    min-width: 100%;
+    max-width: 100%;
+  }
+  
+  .header-buttons {
+    gap: 0.4rem;
+  }
+}
+
+.wcard {
+  width: 410px;
+  height: 235px;
+  position: relative;
+  padding: 25px;
+  background: radial-gradient(178.94% 106.41% at 26.42% 106.41%, #FFF7B1 0%, rgba(255, 255, 255, 0) 71.88%), #FFFFFF;
+  box-shadow: 0px 155px 62px rgba(0, 0, 0, 0.01), 0px 87px 52px rgba(0, 0, 0, 0.05), 0px 39px 39px rgba(0, 0, 0, 0.09), 0px 10px 21px rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 23px;
+  transition: all 0.8s cubic-bezier(0.15, 0.83, 0.66, 1);
+  cursor: pointer;
+}
+
+.wcard:hover {
+  transform: scale(1.05);
+}
+
+.wcontainer {
+  width: 220px;
+  height: 220px;
+  position: absolute;
+  right: -25px;
+  top: -50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0.7);
+}
+
+.cloud {
+  width: 250px;
+}
+
+#today { font-size: 12px; color: #000; }
+
+.front {
+  padding-top: 45px;
+  margin-left: 25px;
+  display: inline;
+  position: absolute;
+  z-index: 11;
+  animation: clouds 8s infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.back {
+  margin-top: -30px;
+  margin-left: 150px;
+  z-index: 12;
+  animation: clouds 12s infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.right-front {
+  width: 45px;
+  height: 45px;
+  border-radius: 50% 50% 50% 0%;
+  background-color: #4c9beb;
+  display: inline-block;
+  margin-left: -25px;
+  z-index: 5;
+}
+
+.left-front {
+  width: 65px;
+  height: 65px;
+  border-radius: 50% 50% 0% 50%;
+  background-color: #4c9beb;
+  display: inline-block;
+  z-index: 5;
+}
+
+.right-back {
+  width: 50px;
+  height: 50px;
+  border-radius: 50% 50% 50% 0%;
+  background-color: #4c9beb;
+  display: inline-block;
+  margin-left: -20px;
+  z-index: 5;
+}
+
+.left-back {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 0% 50%;
+  background-color: #4c9beb;
+  display: inline-block;
+  z-index: 5;
+}
+
+.sun {
+  width: 120px;
+  height: 120px;
+  background: -webkit-linear-gradient(to right, #fcbb04, #fffc00);
+  background: linear-gradient(to right, #fcbb04, #fffc00);
+  border-radius: 60px;
+  display: inline;
+  position: absolute;
+}
+
+.sunshine {
+  animation: sunshines 2s infinite;
+}
+
+@keyframes sunshines {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes clouds {
+  0% {
+    transform: translateX(15px);
+  }
+
+  50% {
+    transform: translateX(0px);
+  }
+
+  100% {
+    transform: translateX(15px);
+  }
+}
+
+.wcard-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wcard-header span:first-child {
+  word-break: break-all;
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 135%;
+  color: rgba(87, 77, 51, 0.66);
+}
+
+.wcard-header span:last-child {
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 135%;
+  color: rgba(87, 77, 51, 0.33);
+}
+
+.temp {
+  position: absolute;
+  left: 25px;
+  bottom: 12px;
+  font-weight: 700;
+  font-size: 64px;
+  line-height: 77px;
+  color: rgba(87, 77, 51, 1);
+}
+
+.temp-scale {
+  width: 80px;
+  height: 36px;
+  position: absolute;
+  right: 25px;
+  bottom: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 9px;
+}
+
+.temp-scale span {
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 134.49%;
+  color: rgba(87, 77, 51, 0.66);
+}
+
+.condition {
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 134.49%;
+  color: rgba(87, 77, 51, 0.66);
+}
+
+.wind {
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 134.49%;
+  color: rgba(87, 77, 51, 0.66);
+}
+
+/* Ensure civilization-section is full-width */
+.civilization-section {
+  width: 100%;
+  margin: 20px 0;
+}
+
+/* Style for the civilization resources (bars) */
+.civilization-resource {
+  margin-bottom: 4px;
+}
+
+.civilization-resource h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.civilization-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.civilization-bar {
+  flex: 1;
+  height: 20px;
+  background-color: var(--bg-card);
+  border-radius: 0.375rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.civilization-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: var(--width, 0%);
+  background-color: var(--blue); /* #2563eb for all bars except Defense Power */
+  transition: width 0.3s ease;
+}
+
+/* Label styling for consistency */
+.civilization-bar-container span {
+  color: var(--text-secondary); /* #9ca3af */
+  font-size: 0.875rem;
+}
+
+/* Specific styling for Defense Power bar */
+#defensePowerBar {
+  flex: 1;
+  height: 20px;
+  background-color: var(--bg-card);
+  border-radius: 0.375rem;
+  overflow: hidden;
+  position: relative;
+}
+
+#defensePowerBar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: var(--width, 0%);
+  background-color: var(--blue); /* Default, overridden by states below */
+  transition: width 0.3s ease;
+}
+
+/* Color states only for defensePowerBar */
+#defensePowerBar.red::before {
+  background-color: var(--red); /* #dc2626 for < 50 */
+}
+
+#defensePowerBar.yellow::before {
+  background-color: var(--yellow); /* #d97706 for < 150 */
+}
+
+#defensePowerBar.green::before {
+  background-color: var(--green); /* #059669 for >= 150 */
+}
+
+/* Style for the researches section inside civilization-section */
+.researches {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.expedition-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .expedition-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.soldier-options {
+  margin: 10px 0;
+}
+
+.card p {
+  word-wrap: break-word;
+}
+
+.btn-invisible {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0 5px 0 0; /* Margin-right: 5px */
+  cursor: pointer;
+  opacity: 0;
+  width: 40px;
+  height: 40px;
+}
+
+
+/* Popup Styling */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background-color: #1a2526;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  text-align: center;
+}
+
+.popup-content h2 {
+  margin: 0 0 15px 0;
+  font-size: 1.5em;
+}
+
+.popup-content .btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.popup-content .btn:hover {
+  background-color: #0056b3;
+}
+
+/* Achievements Grid */
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  justify-items: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.achievement-card {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background-color: #333;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column; /* Stack trophy and name vertically */
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
+}
+
+.achievement-card.unachieved {
+  opacity: 0.3;
+}
+
+.achievement-card:hover {
+  transform: scale(1.05);
+}
+
+.achievement-card .trophy {
+  font-size: 30px; 
+}
+
+.achievement-card .achievement-name {
+  font-size: 12px;
+  font-style: italic;
+  color: #fff;
+  text-align: center;
+  margin-top: 5px;
+  line-height: 1.2;
+  max-width: 90%; /* Prevent text from touching the edges */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; /* Prevent wrapping */
+}
+
+.achievement-card .tier {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 14px;
+  color: #ffd700;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .achievements-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.popup-content {
+  max-width: 400px;
+}
+}
