@@ -1,4 +1,6 @@
 # wastelands
+## https://mrtrebron.github.io/wastelands/
+## description
 Incremental Idle Game in (Vanilla) JS, HTML, CSS
 
 Simple as can be, no fancy frameworks or anything, all pure Vanilla JS. Sure, all of this could be nicer, prettier, niftier.
