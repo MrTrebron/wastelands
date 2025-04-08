@@ -1899,29 +1899,17 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
   }
 }
 
-// Issue #2
-// https://github.com/MrTrebron/wastelands/issues/2	    
-const woodAvailable = gameState.resources.wood.amount >= woodRequiredThisTick;
-	    
-if (!gameState.generatorsDisabled && woodAvailable && !renewableSufficient) {
-  // Genug Holz vorhanden, aber erneuerbare Energien sind nicht ausreichend
+if (!gameState.generatorsDisabled && gameState.resources.wood.amount >= woodRequiredThisTick && !renewableSufficient) {
   electricityGenerated += generators * generatorProductionRate * timeDiff;
   netChanges.wood -= woodRequiredThisTick;
   gameState.resources.wood.perSecond -= woodConsumptionRate;
-} else if (!gameState.generatorsDisabled && !woodAvailable) {
-  // Nicht genug Holz vorhanden
+} else if (!gameState.generatorsDisabled && gameState.resources.wood.amount < woodRequiredThisTick) {
   gameState.generatorsDisabled = true;
   gameState.lastGeneratorStateChange = now;
   showNotification("Not enough wood! Makeshift Generators have stopped producing electricity.", 'normal');
   saveGame();
-} else if (renewableSufficient) {
-  // Erneuerbare Energien sind ausreichend
-  gameState.generatorsDisabled = true;
-  gameState.lastGeneratorStateChange = now;
-  showNotification("Your renewable energy sources create enough electricity for the community's needs. The Makeshift Generators have been turned off to conserve wood.", 'normal');
-  saveGame();
 }
-// end #2
+
 
     gameState.electricity += electricityGenerated;
     gameState.electricity -= totalElectricityConsumed;
