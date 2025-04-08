@@ -1899,17 +1899,17 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
   }
 }
 
-if (!gameState.generatorsDisabled && gameState.resources.wood.amount >= woodRequiredThisTick && !renewableSufficient) {
-  electricityGenerated += generators * generatorProductionRate * timeDiff;
-  netChanges.wood -= woodRequiredThisTick;
-  gameState.resources.wood.perSecond -= woodConsumptionRate;
-} else if (!gameState.generatorsDisabled && gameState.resources.wood.amount < woodRequiredThisTick) {
-  gameState.generatorsDisabled = true;
-  gameState.lastGeneratorStateChange = now;
-  showNotification("Not enough wood! Makeshift Generators have stopped producing electricity.", 'normal');
-  saveGame();
-}
-
+      if (!gameState.generatorsDisabled && gameState.resources.wood.amount >= woodRequiredThisTick && !renewableSufficient) {
+        electricityGenerated += generators * generatorProductionRate * timeDiff;
+        netChanges.wood -= woodRequiredThisTick;
+        gameState.resources.wood.perSecond -= woodConsumptionRate;
+      } else if (!gameState.generatorsDisabled && gameState.resources.wood.amount < woodRequiredThisTick) {
+        gameState.generatorsDisabled = true;
+        gameState.lastGeneratorStateChange = now;
+        showNotification("Not enough wood! Makeshift Generators have stopped producing electricity.", 'normal');
+        saveGame();
+      }
+    }
 
     gameState.electricity += electricityGenerated;
     gameState.electricity -= totalElectricityConsumed;
@@ -2886,10 +2886,10 @@ function createBuildingCard(building) {
   let isBuildable = true;
   if (building.id === 'expeditionHQ') {
     isBuildable = building.amount < 1;
-    // console.log(`expeditionHQ isBuildable: ${isBuildable} (amount: ${building.amount})`);
+    console.log(`expeditionHQ isBuildable: ${isBuildable} (amount: ${building.amount})`);
   } else if (building.maxAmount) {
     isBuildable = building.amount < building.maxAmount;
-    // console.log(`${building.id} isBuildable: ${isBuildable} (amount: ${building.amount}, maxAmount: ${building.maxAmount})`);
+    console.log(`${building.id} isBuildable: ${isBuildable} (amount: ${building.amount}, maxAmount: ${building.maxAmount})`);
   }
 
   const canAffordTen = Object.entries(building.cost).every(
