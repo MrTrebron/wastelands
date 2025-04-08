@@ -1902,7 +1902,6 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
 // Issue #2
 // https://github.com/MrTrebron/wastelands/issues/2	    
 const woodAvailable = gameState.resources.wood.amount >= woodRequiredThisTick;
-renewableSufficient = renewableProductionPerSecond >= totalConsumptionPerSecond;
 	    
 if (!gameState.generatorsDisabled && woodAvailable && !renewableSufficient) {
   // Genug Holz vorhanden, aber erneuerbare Energien sind nicht ausreichend
