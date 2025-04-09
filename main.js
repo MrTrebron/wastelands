@@ -1793,7 +1793,7 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
     });
 
     if (trailers > 0) {
-      const trailerConsumption = 0.2 * trailers * timeDiff;
+      const trailerConsumption = 0.01 * trailers * timeDiff; // Changed from 0.2 to 0.01, cause trailor have no electricity consumption in description
       totalElectricityConsumed += trailerConsumption;
     }
 
