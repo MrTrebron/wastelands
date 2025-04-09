@@ -2390,6 +2390,9 @@ function createElectricityBudgetItem() {
   }
 
   const netRate = totalProduction - totalConsumption;
+	console.log('Debug netRates: Electricity totalProduction - ' + totalProduction ); // MrTrebron debug
+	console.log('Debug netRates: Electricity totalConsumption- ' + totalConsumption ); // MrTrebron debug
+	console.log('Debug netRates: Electricity netRate - ' + netRate ); // MrTrebron debug
   const netClass = netRate > 0 ? 'net-positive' : netRate < 0 ? 'net-negative' : 'net-neutral';
 
   const producers = [];
@@ -2405,8 +2408,7 @@ function createElectricityBudgetItem() {
   if (waterPower > 0) {
     producers.push(`<li>Water Power: (+3.25/s, ${waterPower} owned, total +${waterPowerProduction.toFixed(2)}/s)</li>`);
   }
-      console.log('Debug netRates: Electricity - ' + netRate ); // MrTrebron debug 
-
+      
   return `
     <div class="resource-budget-item">
       <h3>Electricity</h3>
