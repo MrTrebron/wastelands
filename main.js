@@ -1473,9 +1473,9 @@ function checkForEvents() {
   if (gameState.activeEvent) return;
   if (now < gameState.nextEventCheck) return;
 
-  console.log("Checking for events at time:", now);
-  console.log("lastEventTimes:", gameState.lastEventTimes);
-  console.log("nextEventCheck:", gameState.nextEventCheck);
+  // (// console.log("Checking for events at time:", now);
+  // // console.log("lastEventTimes:", gameState.lastEventTimes);
+  // // console.log("nextEventCheck:", gameState.nextEventCheck);
 
   const lastAttack = gameState.lastEventTimes['communityAttack'] || 0;
   const timeSinceLastAttack = now - lastAttack;
@@ -1486,17 +1486,17 @@ function checkForEvents() {
     const safeLastTriggered = lastTriggered > now ? 0 : lastTriggered;
     const timeSinceLast = now - safeLastTriggered;
     const isEligible = timeSinceLast >= event.minCooldown && event.conditions();
-    console.log(`Event ${event.id}: timeSinceLast = ${timeSinceLast}ms (${(timeSinceLast / 60000).toFixed(2)} minutes), minCooldown = ${event.minCooldown}ms (${event.minCooldown / 60000} minutes), conditionMet = ${event.conditions()}, eligible = ${isEligible}`);
+    // // console.log(`Event ${event.id}: timeSinceLast = ${timeSinceLast}ms (${(timeSinceLast / 60000).toFixed(2)} minutes), minCooldown = ${event.minCooldown}ms (${event.minCooldown / 60000} minutes), conditionMet = ${event.conditions()}, eligible = ${isEligible}`);
     return isEligible;
   });
 
   let event;
   if (timeSinceLastAttack >= oneHour && gameState.hasUnlockedDefensePower && gameState.soldiers > 0) {
     event = TIMED_EVENTS['communityAttack'];
-    console.log("Forcing communityAttack as 1 hour has passed since last attack.");
+    // // console.log("Forcing communityAttack as 1 hour has passed since last attack.");
   } else if (possibleEvents.length > 0) {
     event = possibleEvents[Math.floor(Math.random() * possibleEvents.length)];
-    console.log("Selected random event:", event.id);
+    // // console.log("Selected random event:", event.id);
   }
 
   if (!event) {
@@ -2886,10 +2886,10 @@ function createBuildingCard(building) {
   let isBuildable = true;
   if (building.id === 'expeditionHQ') {
     isBuildable = building.amount < 1;
-    // console.log(`expeditionHQ isBuildable: ${isBuildable} (amount: ${building.amount})`);
+    // // // console.log(`expeditionHQ isBuildable: ${isBuildable} (amount: ${building.amount})`);
   } else if (building.maxAmount) {
     isBuildable = building.amount < building.maxAmount;
-    // console.log(`${building.id} isBuildable: ${isBuildable} (amount: ${building.amount}, maxAmount: ${building.maxAmount})`);
+    // // // console.log(`${building.id} isBuildable: ${isBuildable} (amount: ${building.amount}, maxAmount: ${building.maxAmount})`);
   }
 
   const canAffordTen = Object.entries(building.cost).every(
@@ -3217,16 +3217,16 @@ function createExpeditionCard(expedition) {
   const { id, name, description, cost } = expedition;
 
   // Log the current adminPoints for debugging
-  console.log(`Rendering expedition card for ${id}: gameState.adminPoints=${gameState.adminPoints}, gameState.resources.adminPoints.amount=${gameState.resources.adminPoints.amount}`);
+  // // console.log(`Rendering expedition card for ${id}: gameState.adminPoints=${gameState.adminPoints}, gameState.resources.adminPoints.amount=${gameState.resources.adminPoints.amount}`);
 
   const canAfford = Object.entries(cost).every(([resourceId, amount]) => {
     if (resourceId === 'adminPoints') {
       const affordable = gameState.adminPoints >= amount;
-      console.log(`Checking affordability for ${resourceId}: need ${amount}, have ${gameState.adminPoints}, affordable=${affordable}`);
+      // // console.log(`Checking affordability for ${resourceId}: need ${amount}, have ${gameState.adminPoints}, affordable=${affordable}`);
       return affordable;
     }
     const affordable = gameState.resources[resourceId].amount >= amount;
-    console.log(`Checking affordability for ${resourceId}: need ${amount}, have ${gameState.resources[resourceId].amount}, affordable=${affordable}`);
+    // // console.log(`Checking affordability for ${resourceId}: need ${amount}, have ${gameState.resources[resourceId].amount}, affordable=${affordable}`);
     return affordable;
   });
 
@@ -3235,7 +3235,7 @@ function createExpeditionCard(expedition) {
       const affordable = resourceId === 'adminPoints' 
         ? gameState.adminPoints >= amount 
         : gameState.resources[resourceId].amount >= amount;
-      console.log(`Displaying cost for ${resourceId}: need ${amount}, have ${resourceId === 'adminPoints' ? gameState.adminPoints : gameState.resources[resourceId].amount}, class=${affordable ? 'affordable' : 'not-affordable'}`);
+      // // console.log(`Displaying cost for ${resourceId}: need ${amount}, have ${resourceId === 'adminPoints' ? gameState.adminPoints : gameState.resources[resourceId].amount}, class=${affordable ? 'affordable' : 'not-affordable'}`);
       return `
         <li class="cost-item ${affordable ? 'affordable' : 'not-affordable'}">
           ${resourceId === 'adminPoints' ? 'Administrative Points' : gameState.resources[resourceId].name}: ${amount}
@@ -3382,27 +3382,27 @@ function syncGameState() {
   });
 
   // Sync buildings
-  //console.log("Syncing buildings. Initial buildings:", initialGameState.buildings);
-  //console.log("Current gameState.buildings:", gameState.buildings);
+  //// // console.log("Syncing buildings. Initial buildings:", initialGameState.buildings);
+  //// // console.log("Current gameState.buildings:", gameState.buildings);
   Object.keys(gameState.buildings).forEach(buildingId => {
     if (gameState.buildings[buildingId] === undefined || gameState.buildings[buildingId] === null) {
-      console.log(`Removing invalid building entry: ${buildingId}`);
+      // // console.log(`Removing invalid building entry: ${buildingId}`);
       delete gameState.buildings[buildingId];
     }
   });
   Object.entries(initialGameState.buildings).forEach(([buildingId, initialBuilding]) => {
     if (!gameState.buildings[buildingId] || typeof gameState.buildings[buildingId] !== 'object') {
-      console.log(`Building ${buildingId} not found or invalid in gameState.buildings, initializing.`);
+      // // console.log(`Building ${buildingId} not found or invalid in gameState.buildings, initializing.`);
       gameState.buildings[buildingId] = { ...initialBuilding };
     } else {
-      //console.log(`Building ${buildingId} found, ensuring properties. Current:`, gameState.buildings[buildingId]);
+      //// console.log(`Building ${buildingId} found, ensuring properties. Current:`, gameState.buildings[buildingId]);
       gameState.buildings[buildingId] = {
         ...initialBuilding,
         amount: gameState.buildings[buildingId].amount ?? 0
       };
     }
   });
-  //console.log("After sync, gameState.buildings:", gameState.buildings);
+  //// console.log("After sync, gameState.buildings:", gameState.buildings);
 
   // Sync researches
   Object.entries(initialGameState.researches).forEach(([researchId, initialResearch]) => {
@@ -3419,7 +3419,7 @@ function syncGameState() {
   // Check and set hasUnlockedExpeditions with notification
   const previousUnlockedExpeditions = gameState.hasUnlockedExpeditions;
   gameState.hasUnlockedExpeditions = gameState.buildings.armory?.amount >= 5 && gameState.buildings.barracks?.amount >= 5;
-  //console.log("hasUnlockedExpeditions set to:", gameState.hasUnlockedExpeditions);
+  //// console.log("hasUnlockedExpeditions set to:", gameState.hasUnlockedExpeditions);
   if (!previousUnlockedExpeditions && gameState.hasUnlockedExpeditions && !gameState.hasSeenExpeditionUnlockNotification) {
     showNotification(
       "Now, that you're building weapons and training soldiers, you can send them on expeditions. Build the Expedition HQ. Caution: this building needs a lot of electricity to work.",
@@ -3801,7 +3801,7 @@ if (defensePower < 50) {
       wasActive !== isActive ||
       affordabilityKey !== previousAffordabilityKey
     ) {
-      console.log(`Rebuilding expedition cards: initialized=${expeditionsContainer.dataset.initialized}, wasActive=${wasActive}, isActive=${isActive}, affordabilityChanged=${affordabilityKey !== previousAffordabilityKey}`);
+      // console.log(`Rebuilding expedition cards: initialized=${expeditionsContainer.dataset.initialized}, wasActive=${wasActive}, isActive=${isActive}, affordabilityChanged=${affordabilityKey !== previousAffordabilityKey}`);
       expeditionsContainer.innerHTML = Object.values(EXPEDITIONS).map(createExpeditionCard).join('');
       expeditionsContainer.dataset.initialized = 'true';
       expeditionsContainer.dataset.wasActive = isActive.toString();
@@ -3944,7 +3944,7 @@ function loadGame() {
     const validResourceIds = Object.keys(initialGameState.resources);
     Object.keys(gameState.resources).forEach(resourceId => {
       if (!validResourceIds.includes(resourceId)) {
-        console.log(`Removing undefined resource: ${resourceId}`);
+        // console.log(`Removing undefined resource: ${resourceId}`);
         delete gameState.resources[resourceId];
       }
     });
@@ -3953,7 +3953,7 @@ function loadGame() {
 const validBuildingIds = Object.keys(initialGameState.buildings);
 Object.keys(gameState.buildings).forEach(buildingId => {
   if (!validBuildingIds.includes(buildingId)) {
-    console.log(`Removing undefined building: ${buildingId}`);
+    // console.log(`Removing undefined building: ${buildingId}`);
     delete gameState.buildings[buildingId];
   }
 });
@@ -4329,7 +4329,7 @@ function resetGame() {
   gameState = { ...initialGameState }; // Fresh reset
   saveGame();
   updateUI();
-  console.log("Game reset to start values.");
+  // console.log("Game reset to start values.");
 }
 
 var objToday = new Date(),
@@ -4363,7 +4363,7 @@ navigator.geolocation.getCurrentPosition(loadUrl, (error) => {
   console.error("Geolocation error:", error);
   // Fallback: Retry geolocation after a delay
   setTimeout(() => {
-    console.log("Retrying geolocation...");
+    // console.log("Retrying geolocation...");
     navigator.geolocation.getCurrentPosition(loadUrl, (error) => {
       console.error("Geolocation failed again:", error);
       CITY.innerText = "Location unavailable";
@@ -4433,7 +4433,7 @@ async function fetchApi(url) {
     saveGame(); // Save the updated weather data
     updateBuffsDebuffs(); // Update buffs/debuffs based on new weather
 
-    console.log(`Weather updated: ${data.name}, ${temperature}ºC, ${condition}, Wind: ${windSpeed}m/s, Cloud Cover: ${cloudCover}%`);
+    // console.log(`Weather updated: ${data.name}, ${temperature}ºC, ${condition}, Wind: ${windSpeed}m/s, Cloud Cover: ${cloudCover}%`);
   } catch (error) {
     console.error("Error fetching weather data:", error);
   }
