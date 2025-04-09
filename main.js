@@ -2405,7 +2405,7 @@ function createElectricityBudgetItem() {
   if (waterPower > 0) {
     producers.push(`<li>Water Power: (+3.25/s, ${waterPower} owned, total +${waterPowerProduction.toFixed(2)}/s)</li>`);
   }
-      console.log('Debug netRates: ${resource.name} - ${netRate}'); // MrTrebron debug 
+      console.log('Debug netRates: Electricity - ' + netRate ); // MrTrebron debug 
 
   return `
     <div class="resource-budget-item">
