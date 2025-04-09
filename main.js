@@ -2299,7 +2299,6 @@ function createResourceBudgetItem(resourceId, resource) {
   return `
     <div class="resource-budget-item">
       <h3>${resource.name}</h3>
-      console.log('Debug netRates: ${resource.name} - ${netRate}'); // MrTrebron debug 
       <p>Net: <span class="${netClass}">${netRate.toFixed(2)}/s</span></p>
       ${producers ? '<p>Produced:</p><ul>' + producers + '</ul>' : ''}
       ${consumerItems.length > 0 ? '<p>Consumed:</p><ul>' + consumerItems.join('') + '</ul>' : ''}
@@ -2406,6 +2405,7 @@ function createElectricityBudgetItem() {
   if (waterPower > 0) {
     producers.push(`<li>Water Power: (+3.25/s, ${waterPower} owned, total +${waterPowerProduction.toFixed(2)}/s)</li>`);
   }
+      console.log('Debug netRates: ${resource.name} - ${netRate}'); // MrTrebron debug 
 
   return `
     <div class="resource-budget-item">
