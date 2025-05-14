@@ -1121,6 +1121,22 @@ bigAttack: {
   minCooldown: 7200000, // 2 hours
   conditions: () => gameState.resources.defensePower.amount > 400
 },
+  
+  // Add more events here as needed, e.g.:
+  // resourceBoost: {
+  //   id: 'resourceBoost',
+  //   name: 'Resource Boost',
+  //   duration: 300000, // 5 minutes
+  //   notificationText: "A supply drop has been found! Scrap production is increased by 50% for 5 minutes.",
+  //   effect: {
+  //     type: 'productionModifier',
+  //     resourceId: 'scrap',
+  //     modifier: 1.5 // Increase scrap production by 50%
+  //   },
+  //   displayText: "Resource Boost: Scrap production +50%",
+  //   minCooldown: 900000, // 15 minutes
+  //   conditions: () => gameState.resources.scrap.amount < 50
+  // }
 };
 
 const EXPEDITIONS = {
@@ -1199,7 +1215,7 @@ const ACHIEVEMENTS = {
     maxUnlock: 1,
     reward: null, // No reward
     tier: 2, // Tier 2 (**) - valid tiers are 1, 2, or 3
-    description: "Has built at least 15 City Councils."
+    description: "Has 7500 soldiers or more."
   },
   burnItAll: {
     name: "Let it burn!",
@@ -1473,9 +1489,9 @@ function checkForEvents() {
   if (gameState.activeEvent) return;
   if (now < gameState.nextEventCheck) return;
 
-  // (// console.log("Checking for events at time:", now);
-  // // console.log("lastEventTimes:", gameState.lastEventTimes);
-  // // console.log("nextEventCheck:", gameState.nextEventCheck);
+  console.log("Checking for events at time:", now);
+  console.log("lastEventTimes:", gameState.lastEventTimes);
+  console.log("nextEventCheck:", gameState.nextEventCheck);
 
   const lastAttack = gameState.lastEventTimes['communityAttack'] || 0;
   const timeSinceLastAttack = now - lastAttack;
@@ -1486,17 +1502,17 @@ function checkForEvents() {
     const safeLastTriggered = lastTriggered > now ? 0 : lastTriggered;
     const timeSinceLast = now - safeLastTriggered;
     const isEligible = timeSinceLast >= event.minCooldown && event.conditions();
-    // // console.log(`Event ${event.id}: timeSinceLast = ${timeSinceLast}ms (${(timeSinceLast / 60000).toFixed(2)} minutes), minCooldown = ${event.minCooldown}ms (${event.minCooldown / 60000} minutes), conditionMet = ${event.conditions()}, eligible = ${isEligible}`);
+    console.log(`Event ${event.id}: timeSinceLast = ${timeSinceLast}ms (${(timeSinceLast / 60000).toFixed(2)} minutes), minCooldown = ${event.minCooldown}ms (${event.minCooldown / 60000} minutes), conditionMet = ${event.conditions()}, eligible = ${isEligible}`);
     return isEligible;
   });
 
   let event;
   if (timeSinceLastAttack >= oneHour && gameState.hasUnlockedDefensePower && gameState.soldiers > 0) {
     event = TIMED_EVENTS['communityAttack'];
-    // // console.log("Forcing communityAttack as 1 hour has passed since last attack.");
+    console.log("Forcing communityAttack as 1 hour has passed since last attack.");
   } else if (possibleEvents.length > 0) {
     event = possibleEvents[Math.floor(Math.random() * possibleEvents.length)];
-    // // console.log("Selected random event:", event.id);
+    console.log("Selected random event:", event.id);
   }
 
   if (!event) {
@@ -1793,7 +1809,7 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
     });
 
     if (trailers > 0) {
-      const trailerConsumption = 0.01 * trailers * timeDiff; // Changed from 0.2 to 0.01, cause trailor have no electricity consumption in description
+      const trailerConsumption = 0.2 * trailers * timeDiff;
       totalElectricityConsumed += trailerConsumption;
     }
 
@@ -2390,7 +2406,6 @@ function createElectricityBudgetItem() {
   }
 
   const netRate = totalProduction - totalConsumption;
-
   const netClass = netRate > 0 ? 'net-positive' : netRate < 0 ? 'net-negative' : 'net-neutral';
 
   const producers = [];
@@ -2406,7 +2421,7 @@ function createElectricityBudgetItem() {
   if (waterPower > 0) {
     producers.push(`<li>Water Power: (+3.25/s, ${waterPower} owned, total +${waterPowerProduction.toFixed(2)}/s)</li>`);
   }
-      
+
   return `
     <div class="resource-budget-item">
       <h3>Electricity</h3>
@@ -2887,10 +2902,10 @@ function createBuildingCard(building) {
   let isBuildable = true;
   if (building.id === 'expeditionHQ') {
     isBuildable = building.amount < 1;
-    // // // console.log(`expeditionHQ isBuildable: ${isBuildable} (amount: ${building.amount})`);
+    console.log(`expeditionHQ isBuildable: ${isBuildable} (amount: ${building.amount})`);
   } else if (building.maxAmount) {
     isBuildable = building.amount < building.maxAmount;
-    // // // console.log(`${building.id} isBuildable: ${isBuildable} (amount: ${building.amount}, maxAmount: ${building.maxAmount})`);
+    console.log(`${building.id} isBuildable: ${isBuildable} (amount: ${building.amount}, maxAmount: ${building.maxAmount})`);
   }
 
   const canAffordTen = Object.entries(building.cost).every(
@@ -3218,16 +3233,16 @@ function createExpeditionCard(expedition) {
   const { id, name, description, cost } = expedition;
 
   // Log the current adminPoints for debugging
-  // // console.log(`Rendering expedition card for ${id}: gameState.adminPoints=${gameState.adminPoints}, gameState.resources.adminPoints.amount=${gameState.resources.adminPoints.amount}`);
+  console.log(`Rendering expedition card for ${id}: gameState.adminPoints=${gameState.adminPoints}, gameState.resources.adminPoints.amount=${gameState.resources.adminPoints.amount}`);
 
   const canAfford = Object.entries(cost).every(([resourceId, amount]) => {
     if (resourceId === 'adminPoints') {
       const affordable = gameState.adminPoints >= amount;
-      // // console.log(`Checking affordability for ${resourceId}: need ${amount}, have ${gameState.adminPoints}, affordable=${affordable}`);
+      console.log(`Checking affordability for ${resourceId}: need ${amount}, have ${gameState.adminPoints}, affordable=${affordable}`);
       return affordable;
     }
     const affordable = gameState.resources[resourceId].amount >= amount;
-    // // console.log(`Checking affordability for ${resourceId}: need ${amount}, have ${gameState.resources[resourceId].amount}, affordable=${affordable}`);
+    console.log(`Checking affordability for ${resourceId}: need ${amount}, have ${gameState.resources[resourceId].amount}, affordable=${affordable}`);
     return affordable;
   });
 
@@ -3236,7 +3251,7 @@ function createExpeditionCard(expedition) {
       const affordable = resourceId === 'adminPoints' 
         ? gameState.adminPoints >= amount 
         : gameState.resources[resourceId].amount >= amount;
-      // // console.log(`Displaying cost for ${resourceId}: need ${amount}, have ${resourceId === 'adminPoints' ? gameState.adminPoints : gameState.resources[resourceId].amount}, class=${affordable ? 'affordable' : 'not-affordable'}`);
+      console.log(`Displaying cost for ${resourceId}: need ${amount}, have ${resourceId === 'adminPoints' ? gameState.adminPoints : gameState.resources[resourceId].amount}, class=${affordable ? 'affordable' : 'not-affordable'}`);
       return `
         <li class="cost-item ${affordable ? 'affordable' : 'not-affordable'}">
           ${resourceId === 'adminPoints' ? 'Administrative Points' : gameState.resources[resourceId].name}: ${amount}
@@ -3383,27 +3398,27 @@ function syncGameState() {
   });
 
   // Sync buildings
-  //// // console.log("Syncing buildings. Initial buildings:", initialGameState.buildings);
-  //// // console.log("Current gameState.buildings:", gameState.buildings);
+  //console.log("Syncing buildings. Initial buildings:", initialGameState.buildings);
+  //console.log("Current gameState.buildings:", gameState.buildings);
   Object.keys(gameState.buildings).forEach(buildingId => {
     if (gameState.buildings[buildingId] === undefined || gameState.buildings[buildingId] === null) {
-      // // console.log(`Removing invalid building entry: ${buildingId}`);
+      console.log(`Removing invalid building entry: ${buildingId}`);
       delete gameState.buildings[buildingId];
     }
   });
   Object.entries(initialGameState.buildings).forEach(([buildingId, initialBuilding]) => {
     if (!gameState.buildings[buildingId] || typeof gameState.buildings[buildingId] !== 'object') {
-      // // console.log(`Building ${buildingId} not found or invalid in gameState.buildings, initializing.`);
+      console.log(`Building ${buildingId} not found or invalid in gameState.buildings, initializing.`);
       gameState.buildings[buildingId] = { ...initialBuilding };
     } else {
-      //// console.log(`Building ${buildingId} found, ensuring properties. Current:`, gameState.buildings[buildingId]);
+      //console.log(`Building ${buildingId} found, ensuring properties. Current:`, gameState.buildings[buildingId]);
       gameState.buildings[buildingId] = {
         ...initialBuilding,
         amount: gameState.buildings[buildingId].amount ?? 0
       };
     }
   });
-  //// console.log("After sync, gameState.buildings:", gameState.buildings);
+  //console.log("After sync, gameState.buildings:", gameState.buildings);
 
   // Sync researches
   Object.entries(initialGameState.researches).forEach(([researchId, initialResearch]) => {
@@ -3420,7 +3435,7 @@ function syncGameState() {
   // Check and set hasUnlockedExpeditions with notification
   const previousUnlockedExpeditions = gameState.hasUnlockedExpeditions;
   gameState.hasUnlockedExpeditions = gameState.buildings.armory?.amount >= 5 && gameState.buildings.barracks?.amount >= 5;
-  //// console.log("hasUnlockedExpeditions set to:", gameState.hasUnlockedExpeditions);
+  //console.log("hasUnlockedExpeditions set to:", gameState.hasUnlockedExpeditions);
   if (!previousUnlockedExpeditions && gameState.hasUnlockedExpeditions && !gameState.hasSeenExpeditionUnlockNotification) {
     showNotification(
       "Now, that you're building weapons and training soldiers, you can send them on expeditions. Build the Expedition HQ. Caution: this building needs a lot of electricity to work.",
@@ -3802,7 +3817,7 @@ if (defensePower < 50) {
       wasActive !== isActive ||
       affordabilityKey !== previousAffordabilityKey
     ) {
-      // console.log(`Rebuilding expedition cards: initialized=${expeditionsContainer.dataset.initialized}, wasActive=${wasActive}, isActive=${isActive}, affordabilityChanged=${affordabilityKey !== previousAffordabilityKey}`);
+      console.log(`Rebuilding expedition cards: initialized=${expeditionsContainer.dataset.initialized}, wasActive=${wasActive}, isActive=${isActive}, affordabilityChanged=${affordabilityKey !== previousAffordabilityKey}`);
       expeditionsContainer.innerHTML = Object.values(EXPEDITIONS).map(createExpeditionCard).join('');
       expeditionsContainer.dataset.initialized = 'true';
       expeditionsContainer.dataset.wasActive = isActive.toString();
@@ -3945,7 +3960,7 @@ function loadGame() {
     const validResourceIds = Object.keys(initialGameState.resources);
     Object.keys(gameState.resources).forEach(resourceId => {
       if (!validResourceIds.includes(resourceId)) {
-        // console.log(`Removing undefined resource: ${resourceId}`);
+        console.log(`Removing undefined resource: ${resourceId}`);
         delete gameState.resources[resourceId];
       }
     });
@@ -3954,7 +3969,7 @@ function loadGame() {
 const validBuildingIds = Object.keys(initialGameState.buildings);
 Object.keys(gameState.buildings).forEach(buildingId => {
   if (!validBuildingIds.includes(buildingId)) {
-    // console.log(`Removing undefined building: ${buildingId}`);
+    console.log(`Removing undefined building: ${buildingId}`);
     delete gameState.buildings[buildingId];
   }
 });
@@ -4218,7 +4233,7 @@ if (!gameState.lastAchievementCheck) {
 }
 
 // Add to game loop or a timer
-setInterval(syncGameState, 5000); // Check every 5 seconds 
+setInterval(syncGameState, 5000); // Check every 5 seconds (adjust as needed)
 
 function exportSave() {
   const saveData = btoa(JSON.stringify(gameState));
@@ -4330,7 +4345,7 @@ function resetGame() {
   gameState = { ...initialGameState }; // Fresh reset
   saveGame();
   updateUI();
-  // console.log("Game reset to start values.");
+  console.log("Game reset to start values.");
 }
 
 var objToday = new Date(),
@@ -4364,7 +4379,7 @@ navigator.geolocation.getCurrentPosition(loadUrl, (error) => {
   console.error("Geolocation error:", error);
   // Fallback: Retry geolocation after a delay
   setTimeout(() => {
-    // console.log("Retrying geolocation...");
+    console.log("Retrying geolocation...");
     navigator.geolocation.getCurrentPosition(loadUrl, (error) => {
       console.error("Geolocation failed again:", error);
       CITY.innerText = "Location unavailable";
@@ -4434,7 +4449,7 @@ async function fetchApi(url) {
     saveGame(); // Save the updated weather data
     updateBuffsDebuffs(); // Update buffs/debuffs based on new weather
 
-    // console.log(`Weather updated: ${data.name}, ${temperature}ºC, ${condition}, Wind: ${windSpeed}m/s, Cloud Cover: ${cloudCover}%`);
+    console.log(`Weather updated: ${data.name}, ${temperature}ºC, ${condition}, Wind: ${windSpeed}m/s, Cloud Cover: ${cloudCover}%`);
   } catch (error) {
     console.error("Error fetching weather data:", error);
   }
@@ -4528,7 +4543,7 @@ document.getElementById('cheatButton').addEventListener('click', () => {
   showNotification('Cheat activated: All normal resources filled to max!', 'normal');
 });
 
-
+// Add event listener for the Imprint button
 const legalButton = document.getElementById('legalButton');
 if (legalButton) {
   legalButton.addEventListener('click', () => {
@@ -4538,6 +4553,7 @@ if (legalButton) {
   console.warn("Imprint button not found in the DOM.");
 }
 
+// Add this after other event listeners
 document.getElementById('backgroundStoryButton').addEventListener('click', () => {
   const backgroundStory = `
     In the year 2045, the world as we knew it crumbled. A devastating combination of climate collapse, resource wars, and a global pandemic left civilization in ruins. The skies turned gray with ash, and the earth became a wasteland where only the strongest—or the most cunning—could survive.\n
