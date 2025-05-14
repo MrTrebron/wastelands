@@ -2426,6 +2426,7 @@ function createElectricityBudgetItem() {
     <div class="resource-budget-item">
       <h3>Electricity</h3>
       <p>Net: <span class="${netClass}">${netRate.toFixed(2)}/s</span></p>
+      <p>Production: <span class="${netClass}">${totalProduction.toFixed(2)}/s</span></p>
       <p>Consumption: <span class="${netClass}">${totalConsumption.toFixed(2)}/s</span></p>
       ${producers.length > 0 ? '<p>Produced:</p><ul>' + producers.join('') + '</ul>' : ''}
       ${consumers.length > 0 ? '<p>Consumed:</p><ul>' + consumers.join('') + '</ul>' : ''}
