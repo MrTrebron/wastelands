@@ -2902,7 +2902,7 @@ function createBuildingCard(building) {
   let isBuildable = true;
   if (building.id === 'expeditionHQ') {
     isBuildable = building.amount < 1;
-    console.log(`expeditionHQ isBuildable: ${isBuildable} (amount: ${building.amount})`);
+    //console.log(`expeditionHQ isBuildable: ${isBuildable} (amount: ${building.amount})`); // deactivated
   } else if (building.maxAmount) {
     isBuildable = building.amount < building.maxAmount;
     console.log(`${building.id} isBuildable: ${isBuildable} (amount: ${building.amount}, maxAmount: ${building.maxAmount})`);
