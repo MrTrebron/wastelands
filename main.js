@@ -2030,7 +2030,6 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
   let baseDefense = ((gameState.soldiers * 2) - gameState.weapons) / 10;
 	if (baseDefense < 0) { 
 		baseDefense = 0;
-	console.log("baseDefense is negative);
 	}
 	      
   // Sum contributions from all defense improvements
