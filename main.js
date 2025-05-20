@@ -2019,13 +2019,15 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
       let totalSoldiersConsumed = 0;
       gameState.soldiers += soldiersGenerated;
 	    //nwi
-	    console.log('soldiersGenerated: ${soldiersGenerated}');
+	    
+console.log(`soldiersGenerated: ${soldiersGenerated}`);
+
       gameState.soldiers -= totalSoldiersConsumed;
       gameState.soldiers = Math.min(gameState.maxSoldiers, Math.max(0, gameState.soldiers));
       gameState.resources.soldiers.amount = gameState.soldiers;
       gameState.resources.soldiers.max = gameState.maxSoldiers;
       gameState.resources.soldiers.perSecond = (soldiersGenerated - totalSoldiersConsumed) / timeDiff;
-	    console.log('gameState.resources.soldiers.perSecond: ${gameState.resources.soldiers.perSecond}');
+	    console.log(`gameState.resources.soldiers.perSecond: ${gameState.resources.soldiers.perSecond}`);
 
       if (gameState.hasUnlockedDefensePower) {
   // Base defense from soldiers and weapons
