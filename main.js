@@ -2026,8 +2026,10 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
 
       if (gameState.hasUnlockedDefensePower) {
   // Base defense from soldiers and weapons
-  const baseDefense = ((gameState.soldiers * 2) - gameState.weapons) / 10;
-
+  // if baseDefense is negative, set to 0
+  let baseDefense = ((gameState.soldiers * 2) - gameState.weapons) / 10;
+	if (baseDefense < 0) { baseDefense = 0;}
+	      
   // Sum contributions from all defense improvements
   let improvementDefense = 0;
   Object.values(gameState.improvements).forEach(improvement => {
