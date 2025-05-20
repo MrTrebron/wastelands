@@ -2026,12 +2026,13 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
 
       if (gameState.hasUnlockedDefensePower) {
   // Base defense from soldiers and weapons
-
+let baseDefense = 0;
 let doubledSoldiers = gameState.soldiers * 2;
 if (doubledSoldiers <= gameState.weapons) {
 	baseDefense = gameState.soldiers * 2 / 10;
 }
 else {
+	baseDefense = ((gameState.soldiers * 2) - gameState.weapons) / 10;
 }
 
 
