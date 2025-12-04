@@ -2577,6 +2577,12 @@ function gather100(resourceId) {
   updateUI();
 }
 
+function gather1000(resourceId) {
+  const resource = gameState.resources[resourceId];
+  resource.amount = Math.min((resource.max ?? Infinity), resource.amount + 100);
+  updateUI();
+}
+
 function improve(improvementId) {
   const improvement = gameState.improvements[improvementId];
   
