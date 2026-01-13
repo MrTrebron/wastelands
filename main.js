@@ -89,15 +89,6 @@ const initialGameState = {
     },
   },
   improvements: {
-    watertanks: {
-      id: 'watertanks',
-      name: 'Water Tanks',
-      cost: { wood: 50, scrap: 50 },
-      raises: 'water',
-      raisesBy: 50,
-      amount: 0,
-      description: 'Increases water max by 50'
-    },
     silo: {
       id: 'silo',
       name: 'Food Silo',
@@ -107,6 +98,15 @@ const initialGameState = {
       amount: 0,
       description: 'Increases food max by 125'
     },
+	    watertanks: {
+      id: 'watertanks',
+      name: 'Water Tanks',
+      cost: { wood: 50, scrap: 50 },
+      raises: 'water',
+      raisesBy: 50,
+      amount: 0,
+      description: 'Increases water max by 50'
+    },  
     scrapyard: {
       id: 'scrapyard',
       name: 'Scrapyard',
