@@ -4412,7 +4412,7 @@ navigator.geolocation.getCurrentPosition(loadUrl, (error) => {
     if (debug) {console.log("Retrying geolocation...")};
     navigator.geolocation.getCurrentPosition(loadUrl, (error) => {
       if (debug) {console.error("Geolocation failed again:", error)};
-		loadURL(chiemseeLocation);
+		loadUrl(chiemseeLocation);
       // CITY.innerText = "Location unavailable";
       // TEMPERATURE.innerText = "N/A";
     });
