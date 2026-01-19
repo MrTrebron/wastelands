@@ -1895,7 +1895,7 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
 		//electricityLabel.textContent = `${gameState.electricity.toFixed(1)} / ${gameState.maxElectricity}`;
 		console.log(totalConsumptionPerSecond + " " + gameState.electricity)
 		if (gameState.electricity >= totalConsumptionPerSecond) 
-		console.log({"Battery is good"));
+		console.log({"Battery is good");
 		 else
 		console.log({"Battery is not enough"))
 																 
