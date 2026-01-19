@@ -1893,6 +1893,7 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
       const totalConsumptionPerSecond = totalElectricityConsumed / timeDiff;
       const renewableSufficient = renewableProductionPerSecond >= totalConsumptionPerSecond;
 	// currentlyWorking
+		const batterySufficient = gameState.electricity >= totalConsumptionPerSecond;
 		console.log(totalConsumptionPerSecond + " " + gameState.electricity);
 		if (gameState.electricity >= totalConsumptionPerSecond) {
   			console.log("Battery is good");
@@ -1902,7 +1903,7 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
 
 
       if (timeSinceLastChange >= minToggleDelay) {
-  if ((renewableSufficient || !canSustain) && !gameState.generatorsDisabled) {
+  if ((renewableSufficient || !canSustain || batterySufficient) && !gameState.generatorsDisabled) {
     gameState.generatorsDisabled = true;
     gameState.lastGeneratorStateChange = now;
     let message;
