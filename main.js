@@ -4425,7 +4425,7 @@ navigator.geolocation.getCurrentPosition(loadUrl, (error) => {
     if (debug) {console.log("Retrying geolocation...")};
     navigator.geolocation.getCurrentPosition(loadUrl, (error) => {
       if (debug) {console.error("Geolocation failed again:", error)};
-		loadUrl(getChiemseePosition);
+		loadUrl(getChiemseePosition());
       // CITY.innerText = "Location unavailable";
       // TEMPERATURE.innerText = "N/A";
     });
