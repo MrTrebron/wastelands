@@ -1893,9 +1893,6 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
       const totalConsumptionPerSecond = totalElectricityConsumed / timeDiff;
       const renewableSufficient = renewableProductionPerSecond >= totalConsumptionPerSecond;
 
-		// currentlyWorking
-
-
       if (timeSinceLastChange >= minToggleDelay) {
   if ((renewableSufficient || !canSustain) && !gameState.generatorsDisabled) {
     gameState.generatorsDisabled = true;
