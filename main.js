@@ -4401,6 +4401,7 @@ const TEMPERATURE = document.getElementById('temperature');
 const URL_MAIN = 'https://api.openweathermap.org/data/2.5/weather';
 const API_KEY = '8f57cb746c4c1d4b48b7f35eba6f6230';
 const UNITS = 'metric';
+const chiemseeLocation = { latitude: 47.88, longitude: 12.42 };
 
 let weatherUrl = ''; // Store the URL globally
 
@@ -4411,8 +4412,9 @@ navigator.geolocation.getCurrentPosition(loadUrl, (error) => {
     if (debug) {console.log("Retrying geolocation...")};
     navigator.geolocation.getCurrentPosition(loadUrl, (error) => {
       if (debug) {console.error("Geolocation failed again:", error)};
-      CITY.innerText = "Location unavailable";
-      TEMPERATURE.innerText = "N/A";
+		loadURL(chiemseeLocation);
+      // CITY.innerText = "Location unavailable";
+      // TEMPERATURE.innerText = "N/A";
     });
   }, 5000);
 });
