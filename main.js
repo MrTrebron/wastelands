@@ -1892,18 +1892,9 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
 
       const totalConsumptionPerSecond = totalElectricityConsumed / timeDiff;
       const renewableSufficient = renewableProductionPerSecond >= totalConsumptionPerSecond;
-	// currentlyWorking
-		const batterySufficient = gameState.electricity >= totalConsumptionPerSecond;
-		console.log(totalConsumptionPerSecond + " " + gameState.electricity);
-		if (gameState.electricity >= totalConsumptionPerSecond) {
-  			console.log("Battery is good");
-		} else {
-  			console.log("Battery is not enough");
-		}
-
 
       if (timeSinceLastChange >= minToggleDelay) {
-  if ((renewableSufficient || !canSustain ) && !gameState.generatorsDisabled) {  
+  if ((renewableSufficient || !canSustain) && !gameState.generatorsDisabled) {
     gameState.generatorsDisabled = true;
     gameState.lastGeneratorStateChange = now;
     let message;
@@ -1915,7 +1906,7 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
     showNotification(message, 'normal');
     logEvent(message);
     saveGame();
-  } else if (!renewableSufficient && canSustain && gameState.generatorsDisabled) {  
+  } else if (!renewableSufficient && canSustain && gameState.generatorsDisabled) {
     gameState.generatorsDisabled = false;
     gameState.lastGeneratorStateChange = now;
     const message = "Your renewable energy sources do not create sufficient electricity to satisfy your ever growing community's needs. The Makeshift Generators have been turned on again to create sufficient electricity.";
