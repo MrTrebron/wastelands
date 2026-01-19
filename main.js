@@ -4413,9 +4413,6 @@ function getChiemseePosition() {
   };
 }
 
-console.log(getChiemseePosition());
-
-
 let weatherUrl = ''; // Store the URL globally
 
 navigator.geolocation.getCurrentPosition(loadUrl, (error) => {
@@ -4433,7 +4430,6 @@ navigator.geolocation.getCurrentPosition(loadUrl, (error) => {
 });
 
 function loadUrl(pos) {
-	console.log(pos);
   let lat = pos.coords.latitude;
   let long = pos.coords.longitude;
   weatherUrl = `${URL_MAIN}?lat=${lat}&lon=${long}&units=${UNITS}&APPID=${API_KEY}`;
