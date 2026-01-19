@@ -1,4 +1,4 @@
-const debug = true;
+const debug = false;
 const SAVE_KEY = 'apocalypse_game_save';
 const TICK_RATE = 1000; // 1 second
 
