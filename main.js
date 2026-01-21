@@ -2467,11 +2467,25 @@ function createElectricityBudgetItem() {
     producers.push(`<li>Water Power: (+3.25/s, ${waterPower} owned, total +${waterPowerProduction.toFixed(2)}/s)</li>`);
   }
 
-  const neededPowereBackup = totalConsumption - waterPowerProduction;
-  const neededPowereBackupClass = neededPowereBackup < 0 ? 'net-positive' : neededPowereBackup > 0 ? 'net-negative' : 'net-neutral';
+  if (totalConsumption - waterPowerProduction >= 0) {
+    var neededPowereBackup = totalConsumption - waterPowerProduction;
+    var neededPowereBackupClass = 'net-negative'
+  }
+  else {
+    var neededPowereBackup = 0
+    var neededPowereBackupClass = 'net-neutral'
+  }
+  
   const volatilePower = solarProduction + windProduction;
-  const batteryLife = gameState.electricity / (totalConsumption - waterPowerProduction);
-   const batteryLifeClass = batteryLife < 0 ? 'net-positive' : batteryLife > 0 ? 'net-negative' : 'net-neutral';
+  
+  if (gameState.electricity / (totalConsumption - waterPowerProduction) >= 0){
+    var batteryLife = gameState.electricity / (totalConsumption - waterPowerProduction);
+    var batteryLifeClass = 'net-negative';
+  }
+  else {
+    var batteryLife = 0;
+    var batteryLifeClass = 'net-neutral';
+  }
 
   return `
     <div class="resource-budget-item">
