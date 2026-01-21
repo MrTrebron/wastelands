@@ -1892,27 +1892,48 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
 
       const totalConsumptionPerSecond = totalElectricityConsumed / timeDiff;
       const renewableSufficient = renewableProductionPerSecond >= totalConsumptionPerSecond;
+      const batteryPower = totalConsumptionPerSecond *2;
+      const batterySufficent = renewableProductionPerSecond + (gameState.electricity - batteryPower) >= totalConsumptionPerSecond;
+      //console.log("totalConsumptionPerSecond:" + totalConsumptionPerSecond);
+      //console.log("gameState.electricity: " + gameState.electricity);
+      //console.log("batteryPower: " + batteryPower);
+      //console.log("batterySufficent: " + batterySufficent);
+      //console.log("renewableSufficient: " + renewableSufficient);
+      //console.log("canSustain: " +canSustain);
+      //console.log("gameState.generatorsDisabled: " + gameState.generatorsDisabled);
+      //console.log("gameState.lastGeneratorStateChange: " + gameState.lastGeneratorStateChange);
 
       if (timeSinceLastChange >= minToggleDelay) {
-  if ((renewableSufficient || !canSustain) && !gameState.generatorsDisabled) {
+  //if ((renewableSufficient || batterySufficent || !canSustain) && !gameState.generatorsDisabled) {
+    if ((batterySufficent || !canSustain) && !gameState.generatorsDisabled) {
     gameState.generatorsDisabled = true;
     gameState.lastGeneratorStateChange = now;
     let message;
     if (!canSustain) {
       message = "Not enough wood! Makeshift Generators have stopped producing electricity.";
+      showNotification(message, 'normal');
     } else {
       message = "Your renewable energy sources create enough electricity for the community's needs. The Makeshift Generators have been turned off to conserve wood.";
     }
-    showNotification(message, 'normal');
+    //showNotification(message, 'normal');
     logEvent(message);
     saveGame();
-  } else if (!renewableSufficient && canSustain && gameState.generatorsDisabled) {
+  //} else if (!renewableSufficient && !batterySufficent && canSustain && gameState.generatorsDisabled) {
+  } else if (!batterySufficent && canSustain && gameState.generatorsDisabled) {
     gameState.generatorsDisabled = false;
     gameState.lastGeneratorStateChange = now;
     const message = "Your renewable energy sources do not create sufficient electricity to satisfy your ever growing community's needs. The Makeshift Generators have been turned on again to create sufficient electricity.";
-    showNotification(message, 'normal');
+    //showNotification(message, 'normal');
     logEvent(message);
     saveGame();
+  } else {
+    //console.log("else");
+    //    gameState.generatorsDisabled = false;
+    //gameState.lastGeneratorStateChange = now;
+    //const message = "Your renewable energy sources do not create sufficient electricity to satisfy your ever growing community's needs. The Makeshift Generators have been turned on again to create sufficient electricity.";
+    //howNotification(message, 'normal');
+    //logEvent(message);
+    //saveGame();
   }
 }
 
