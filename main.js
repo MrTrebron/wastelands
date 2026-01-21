@@ -257,6 +257,15 @@ const initialGameState = {
       amount: 0,
       description: 'Bigger and better batteries store more electricity. And cost more to build.'
     },
+	      extraLargeBatteries: {
+      id: 'extraLargeBatteries',
+      name: 'Extra Large Batteries',
+      cost: { electronics: 15000, scrap: 1500 },
+      raises: 'electricity',
+      raisesBy: 1000,
+      amount: 0,
+      description: 'Extra bigger and better batteries store more electricity. And cost more to build.'
+    },
   },
   buildings: {
     garden: {
@@ -3126,7 +3135,11 @@ function createImprovementsCard(improvement) {
   if (improvement.id === 'largeBatteries' && gameState.improvements.upgradeBatteries.amount < 75) {
     return '';
   }
-  
+
+	// Hide Extra Large Batteries until 75 Upgrade Battieres are built
+  if (improvement.id === 'extraLargeBatteries' && gameState.improvements.largeBatteries.amount < 75) {
+    return '';
+  }
   
   
   // Gate Military Academy
