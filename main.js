@@ -4265,7 +4265,7 @@ if (!gameState.lastAchievementCheck) {
 setInterval(syncGameState, 5000); // Check every 5 seconds (adjust as needed)
 
 function exportSave() {
-  const saveData = btoa(JSON.stringify(gameState));
+  const saveData = (JSON.stringify(gameState));
   navigator.clipboard.writeText(saveData);
   alert('Save data copied to clipboard!');
 }
@@ -4273,7 +4273,7 @@ function exportSave() {
 function importSave() {
   const importInput = document.getElementById('importInput');
   try {
-    const decoded = JSON.parse(atob(importInput.value));
+    const decoded = JSON.parse((importInput.value));
     gameState = decoded;
     saveGame();
     updateUI();
