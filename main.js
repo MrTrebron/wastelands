@@ -2484,8 +2484,8 @@ function createElectricityBudgetItem() {
       <p>of which is wind power: <span class="${netClass}">${windProduction.toFixed(2)}/s</span></p>
       <p>Consumption: <span class="${netClass}">${totalConsumption.toFixed(2)}/s</span></p>
       <p>Volatile production: <span class="${netClass}">${volatilePower.toFixed(2)}/s</span></p>
-      <p>Needed back up: <span class="${neededPowereBackupClass}">${neededPowereBackup.toFixed(2)}/s</span></p>
-      <p>Batteries will last: <span class="${batteryLifeClass}">${batteryLife.toFixed(0)} ticks</span></p>
+      <p>Needed back up: <span class="${neededPowereBackupClass}">${Math.abs(neededPowereBackup).toFixed(2)}/s</span></p>
+      <p>Batteries will last: <span class="${batteryLifeClass}">${Math.abs(batteryLife).toFixed(0)} ticks</span></p>
         
       ${producers.length > 0 ? '<p>Produced:</p><ul>' + producers.join('') + '</ul>' : ''}
       ${consumers.length > 0 ? '<p>Consumed:</p><ul>' + consumers.join('') + '</ul>' : ''}
