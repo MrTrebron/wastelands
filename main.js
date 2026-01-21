@@ -403,7 +403,7 @@ const initialGameState = {
       id: 'apartmentComplex',
       name: 'Apartment Complex',
       cost: { electronics: 250, scrap: 1230, wood: 1400 },
-      provides: { scrap: 0.05, wood: 0.05, electronics: 0.05 },
+      provides: { scrap: 0.5, wood: 0.5, electronics: 0.5 },
       consumes: { electricity: 0.15, food: 0.15, water: 0.05 }, 
       amount: 0,
       description: 'Trailers are nice and shiny but actual proper buildings are nicer and shinier. Apartment complexes house more people, more people means more scavengers to bring home scrap, wood and electronics. More people also means mor needs, though.'
