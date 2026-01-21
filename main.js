@@ -251,16 +251,16 @@ const initialGameState = {
 	largeBatteries: {
       id: 'largeBatteries',
       name: 'Large Batteries',
-      cost: { electronics: 8500, scrap: 7380 },
+      cost: { electronics: 85, scrap: 73 }, //cost: { electronics: 8500, scrap: 7380 },
       raises: 'electricity',
       raisesBy: 250,
       amount: 0,
       description: 'Bigger and better batteries store more electricity. And cost more to build.'
     },
-	      extraLargeBatteries: {
+    extraLargeBatteries: {
       id: 'extraLargeBatteries',
       name: 'Extra Large Batteries',
-      cost: { electronics: 15000, scrap: 15000 },
+      cost: { electronics: 15000, scrap: 1500 },
       raises: 'electricity',
       raisesBy: 1000,
       amount: 0,
@@ -412,7 +412,7 @@ const initialGameState = {
       id: 'apartmentComplex',
       name: 'Apartment Complex',
       cost: { electronics: 250, scrap: 1230, wood: 1400 },
-      provides: { scrap: 0.5, wood: 0.5, electronics: 0.5 },
+      provides: { scrap: 0.05, wood: 0.05, electronics: 0.05 },
       consumes: { electricity: 0.15, food: 0.15, water: 0.05 }, 
       amount: 0,
       description: 'Trailers are nice and shiny but actual proper buildings are nicer and shinier. Apartment complexes house more people, more people means more scavengers to bring home scrap, wood and electronics. More people also means mor needs, though.'
@@ -2467,19 +2467,24 @@ function createElectricityBudgetItem() {
     producers.push(`<li>Water Power: (+3.25/s, ${waterPower} owned, total +${waterPowerProduction.toFixed(2)}/s)</li>`);
   }
 
-	const neededPowereBackup = totalConsumption - waterPowerProduction;
+  const neededPowereBackup = totalConsumption - waterPowerProduction;
   const volatilePower = solarProduction + windProduction;
+  const batteryLife = gameState.electricity / (totalConsumption - waterPowerProduction);
+	
   return `
     <div class="resource-budget-item">
       <h3>Electricity</h3>
       <p>Net: <span class="${netClass}">${netRate.toFixed(2)}/s</span></p>
       <p>Production: <span class="${netClass}">${totalProduction.toFixed(2)}/s</span></p>
+      <p>of which is wood power: <span class="${netClass}">${generatorProduction.toFixed(2)}/s</span></p>
       <p>of which is water power: <span class="${netClass}">${waterPowerProduction.toFixed(2)}/s</span></p>
       <p>of which is solar power: <span class="${netClass}">${solarProduction.toFixed(2)}/s</span></p>
       <p>of which is wind power: <span class="${netClass}">${windProduction.toFixed(2)}/s</span></p>
       <p>Consumption: <span class="${netClass}">${totalConsumption.toFixed(2)}/s</span></p>
       <p>Volatile production: <span class="${netClass}">${volatilePower.toFixed(2)}/s</span></p>
       <p>Needed back up: <span class="${netClass}">${neededPowereBackup.toFixed(2)}/s</span></p>
+      <p>Batteries will last: <span class="${netClass}">${batteryLife.toFixed(0)} ticks</span></p>
+	  
       ${producers.length > 0 ? '<p>Produced:</p><ul>' + producers.join('') + '</ul>' : ''}
       ${consumers.length > 0 ? '<p>Consumed:</p><ul>' + consumers.join('') + '</ul>' : ''}
     </div>
@@ -3142,8 +3147,8 @@ function createImprovementsCard(improvement) {
   if (improvement.id === 'largeBatteries' && gameState.improvements.upgradeBatteries.amount < 75) {
     return '';
   }
-
-	// Hide Extra Large Batteries until 75 Upgrade Battieres are built
+  
+  // Hide Extra Large Batteries until 75 Upgrade Battieres are built
   if (improvement.id === 'extraLargeBatteries' && gameState.improvements.largeBatteries.amount < 75) {
     return '';
   }
