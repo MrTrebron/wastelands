@@ -2480,7 +2480,7 @@ function createElectricityBudgetItem() {
   
   if (gameState.electricity / (totalConsumption - waterPowerProduction) >= 0){
     var batteryLife = gameState.electricity / (totalConsumption - waterPowerProduction);
-    var batteryLifeClass = 'net-negative';
+    var batteryLifeClass = 'net-positive';
   }
   else {
     var batteryLife = 0;
