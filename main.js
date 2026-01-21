@@ -260,7 +260,7 @@ const initialGameState = {
 	      extraLargeBatteries: {
       id: 'extraLargeBatteries',
       name: 'Extra Large Batteries',
-      cost: { electronics: 15000, scrap: 1500 },
+      cost: { electronics: 15000, scrap: 15000 },
       raises: 'electricity',
       raisesBy: 1000,
       amount: 0,
