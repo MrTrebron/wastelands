@@ -1851,7 +1851,7 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
       const baseProduction = solarPanels * 0.35;
       const adjustedProduction = baseProduction * efficiency;
       renewableProductionPerSecond += adjustedProduction;
-      console.log("Solar Production per second: " + renewableProductionPerSecond);
+      //console.log("Solar Production per second: " + renewableProductionPerSecond);
       electricityGenerated += adjustedProduction * timeDiff;
     }
 
@@ -1861,21 +1861,21 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
     if (isWindy) {
       const windProduction = (windmills * 0.25);
       renewableProductionPerSecond += windProduction;
-      console.log("Wind Production per second: " + renewableProductionPerSecond);
+      //console.log("Wind Production per second: " + renewableProductionPerSecond);
       electricityGenerated += windProduction * timeDiff;
     }
     
         if (isBreezy) {
       const breezyWindProduction = (lightWindmills * 0.1);
       renewableProductionPerSecond += breezyWindProduction;
-      console.log("Breezy Wind Production per second: " + renewableProductionPerSecond);
+      //console.log("Breezy Wind Production per second: " + renewableProductionPerSecond);
       electricityGenerated += breezyWindProduction * timeDiff;
     }
 
     if (waterPower > 0) {
       const waterPowerProduction = waterPower * 3.25;
       renewableProductionPerSecond += waterPowerProduction;
-      console.log("Water Power Production per second: " + renewableProductionPerSecond);
+      //console.log("Water Power Production per second: " + renewableProductionPerSecond);
       electricityGenerated += waterPowerProduction * timeDiff;
     }
 
@@ -1923,15 +1923,15 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
       const renewableSufficient = renewableProductionPerSecond >= totalConsumptionPerSecond;
       const batteryPower = totalConsumptionPerSecond *2;
       const batterySufficent = renewableProductionPerSecond + (gameState.electricity - batteryPower) >= totalConsumptionPerSecond;
-      console.log("renewableProductionPerSecond: " + renewableProductionPerSecond);
-      console.log("totalConsumptionPerSecond:" + totalConsumptionPerSecond);
-      console.log("gameState.electricity: " + gameState.electricity);
-      console.log("batteryPower: " + batteryPower);
-      console.log("batterySufficent: " + batterySufficent);
-      console.log("renewableSufficient: " + renewableSufficient);
-      console.log("canSustain: " +canSustain);
-      console.log("gameState.generatorsDisabled: " + gameState.generatorsDisabled);
-      console.log("gameState.lastGeneratorStateChange: " + gameState.lastGeneratorStateChange);
+      //console.log("renewableProductionPerSecond: " + renewableProductionPerSecond);
+      //console.log("totalConsumptionPerSecond:" + totalConsumptionPerSecond);
+      //console.log("gameState.electricity: " + gameState.electricity);
+      //console.log("batteryPower: " + batteryPower);
+      //console.log("batterySufficent: " + batterySufficent);
+      //console.log("renewableSufficient: " + renewableSufficient);
+      //console.log("canSustain: " +canSustain);
+      //console.log("gameState.generatorsDisabled: " + gameState.generatorsDisabled);
+      //console.log("gameState.lastGeneratorStateChange: " + gameState.lastGeneratorStateChange);
 
       if (timeSinceLastChange >= minToggleDelay) {
   //if ((renewableSufficient || batterySufficent || !canSustain) && !gameState.generatorsDisabled) {
