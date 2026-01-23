@@ -2487,6 +2487,8 @@ function createElectricityBudgetItem() {
     var batteryLifeClass = 'net-neutral';
   }
 
+  const batteryLifeInMinutes = (batteryLife / 60 * TICK_RATE / 1000);
+
   return `
     <div class="resource-budget-item">
       <h3>Electricity</h3>
@@ -2499,7 +2501,7 @@ function createElectricityBudgetItem() {
       <p>Consumption: <span class="${netClass}">${totalConsumption.toFixed(2)}/s</span></p>
       <p>Volatile production: <span class="${netClass}">${volatilePower.toFixed(2)}/s</span></p>
       <p>Needed back up: <span class="${neededPowereBackupClass}">${Math.abs(neededPowereBackup).toFixed(2)}/s</span></p>
-      <p>Batteries will last: <span class="${batteryLifeClass}">${Math.abs(batteryLife).toFixed(0)} ticks</span></p>
+      <p>Batteries will last: <span class="${batteryLifeClass}">${Math.abs(batteryLife).toFixed(0)} ticks | ${batteryLifeInMinutes.toFixed(1)} minutes</span></p>
         
       ${producers.length > 0 ? '<p>Produced:</p><ul>' + producers.join('') + '</ul>' : ''}
       ${consumers.length > 0 ? '<p>Consumed:</p><ul>' + consumers.join('') + '</ul>' : ''}
