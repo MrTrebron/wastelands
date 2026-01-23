@@ -381,6 +381,14 @@ const initialGameState = {
       amount: 0,
       description: 'Windmills provide electricity. As long as there is wind (at least 3m/s).'
     },
+        lightWindmill: {
+      id: 'lightWindmill',
+      name: 'Light Windmills',
+      cost: { electronics: 250, scrap: 300 },
+      provides: { electricity: 0.10 },
+      amount: 0,
+      description: 'Light windmills provide electricity. As long as there is wind (at least 1.5m/s).'
+    },
     desal: {
       id: 'desal',
       name: 'Desalination Plant',
@@ -1798,6 +1806,7 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
     const generators = gameState.buildings.generator.amount;
     const solarPanels = gameState.buildings.solarpanel.amount;
     const windmills = gameState.buildings.windmill.amount;
+    const lightWindmill = gameState.buildings.lightWindmill.amount;
     const waterPower = gameState.buildings.powerFromTheRiver.amount;
     const trailers = gameState.buildings.trailer.amount;
 
@@ -1847,12 +1856,19 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
 
     const windSpeed = gameState.weather.windSpeed || 0;
     const isWindy = windSpeed > 3;
+    const isBreezy = windSpeed > 1 && windSpeed <= 3;
     if (isWindy) {
-      const windProduction = windmills * 0.25;
+      const windProduction = (windmills * 0.25) + (lightWindmill * 0.1);
       renewableProductionPerSecond += windProduction;
       electricityGenerated += windProduction * timeDiff;
     }
     
+        if (isBreezy) {
+      const windProduction = (windmills * 0.25) + (lightWindmill * 0.1);
+      renewableProductionPerSecond += windProduction;
+      electricityGenerated += windProduction * timeDiff;
+    }
+
     if (waterPower > 0) {
       const waterPowerProduction = waterPower * 3.25;
       renewableProductionPerSecond += waterPowerProduction;
@@ -2373,6 +2389,7 @@ function createElectricityBudgetItem() {
   const generators = gameState.buildings.generator.amount;
   const solarPanels = gameState.buildings.solarpanel.amount;
   const windmills = gameState.buildings.windmill.amount;
+  const lightWindmills = gameState.buildings.lightWindmill.amount;
   const waterPower = gameState.buildings.powerFromTheRiver.amount;
   const trailers = gameState.buildings.trailer.amount;
   const defenseTurrets = gameState.improvements.defenseTurrets.amount;
@@ -2417,12 +2434,12 @@ function createElectricityBudgetItem() {
 
   const windSpeed = gameState.weather.windSpeed || 0;
   const isWindy = windSpeed > 3;
-  const windProduction = isWindy ? windmills * 0.25 : 0;
-
+  const isBreezy = windSpeed > 1 && windSpeed <= 3;
+  const windProduction = isWindy ? (windmills * 0.25) : 0;
+  const windProductionBreezy = isBreezy ? (lightWindmills * 0.05) : 0;
   const waterPowerProduction = waterPower * 3.25;
 
-  const totalProduction = generatorProduction + solarProduction + windProduction + waterPowerProduction;
-
+  const totalProduction = generatorProduction + solarProduction + windProduction + windProductionBreezy + waterPowerProduction;
   let totalConsumption = 0;
   const consumers = [];
   Object.values(gameState.buildings).forEach(building => {
@@ -2463,6 +2480,9 @@ function createElectricityBudgetItem() {
   if (windmills > 0) {
     producers.push(`<li>Windmills: (+${isWindy ? 0.25 : 0}/s, ${windmills} owned, total +${windProduction.toFixed(2)}/s)${isWindy ? '' : ' (Disabled: Low Wind)'}</li>`);
   }
+  if (lightWindmills > 0) {
+    producers.push(`<li>Light Windmills: (+${isBreezy ? 0.05 : 0}/s, ${lightWindmills} owned, total +${windProductionBreezy.toFixed(2)}/s)${isBreezy ? '' : ' (Disabled: Low Wind)'}</li>`);
+  }
   if (waterPower > 0) {
     producers.push(`<li>Water Power: (+3.25/s, ${waterPower} owned, total +${waterPowerProduction.toFixed(2)}/s)</li>`);
   }
@@ -2476,7 +2496,8 @@ function createElectricityBudgetItem() {
     var neededPowereBackupClass = 'net-neutral'
   }
   
-  const volatilePower = solarProduction + windProduction;
+  const totalWindProduction = windProduction + windProductionBreezy;
+  const volatilePower = solarProduction + totalWindProduction;
   
   if (gameState.electricity / (totalConsumption - waterPowerProduction) >= 0){
     var batteryLife = gameState.electricity / (totalConsumption - waterPowerProduction);
@@ -2497,7 +2518,7 @@ function createElectricityBudgetItem() {
       <p>of which is wood power: <span class="${netClass}">${generatorProduction.toFixed(2)}/s</span></p>
       <p>of which is water power: <span class="${netClass}">${waterPowerProduction.toFixed(2)}/s</span></p>
       <p>of which is solar power: <span class="${netClass}">${solarProduction.toFixed(2)}/s</span></p>
-      <p>of which is wind power: <span class="${netClass}">${windProduction.toFixed(2)}/s</span></p>
+      <p>of which is wind power: <span class="${netClass}">${totalWindProduction.toFixed(2)}/s</span></p>
       <p>Consumption: <span class="${netClass}">${totalConsumption.toFixed(2)}/s</span></p>
       <p>Volatile production: <span class="${netClass}">${volatilePower.toFixed(2)}/s</span></p>
       <p>Needed back up: <span class="${neededPowereBackupClass}">${Math.abs(neededPowereBackup).toFixed(2)}/s</span></p>
@@ -2839,6 +2860,22 @@ function build(buildingId) {
     gameState.hasSeenBAPUnlock = true;
     showNotification(
       "With a robust power supply and a growing population, you need more space for more willing and dutiful scavengers to bring in even more valuable materials. You can now build the Big Apartment Complex.",
+      'normal'
+    );
+    saveGame();
+  }
+
+  if (
+    (buildingId === 'lightWindmill' || buildingId === 'solarpanel' || buildingId === 'windmill') &&
+    gameState.buildings.apartmentComplex.amount >= 15 &&
+    gameState.buildings.solarpanel.amount > 200 &&
+    gameState.buildings.windmill.amount > 200 &&
+    gameState.buildings.lightWindmill.amount > 200
+  ) {
+    gameState.hasUnlockedWaterPower = true;
+    showNotification(
+      "A town like yours needs a lot of power. Ideally, without needing the sun to shine or wind to blow. " +
+      "Luckily, water always flows in the nearby river. Your engineers devised a water powered turbine that creates massive amounts of energy.",
       'normal'
     );
     saveGame();
