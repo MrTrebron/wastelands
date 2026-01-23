@@ -3038,6 +3038,10 @@ function createBuildingCard(building) {
     ([resourceId, cost]) => gameState.resources[resourceId].amount >= cost * 10
   );
 
+  const canAffordHundred = Object.entries(building.cost).every(
+    ([resourceId, cost]) => gameState.resources[resourceId].amount >= cost * 10
+  );
+
   const costList = Object.entries(building.cost)
     .map(([resourceId, cost]) => {
       const affordable = gameState.resources[resourceId].amount >= cost;
@@ -3087,6 +3091,14 @@ function createBuildingCard(building) {
           onclick="window.buildMultiple('${building.id}', 10)"
         >
           Build 10
+        </button>
+      ` : ''}
+      ${canAffordHundred && isBuildable ? `
+        <button 
+          class="btn"
+          onclick="window.buildMultiple('${building.id}', 100)"
+        >
+          Build 100
         </button>
       ` : ''}
     </div>
