@@ -385,7 +385,7 @@ const initialGameState = {
       id: 'lightWindmill',
       name: 'Light Windmills',
       cost: { electronics: 250, scrap: 300 },
-      provides: { electricity: 0.10 },
+      provides: { electricity: 0.1 },
       amount: 0,
       description: 'Light windmills provide electricity. As long as there is wind (at least 1.5m/s).'
     },
@@ -1806,7 +1806,7 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
     const generators = gameState.buildings.generator.amount;
     const solarPanels = gameState.buildings.solarpanel.amount;
     const windmills = gameState.buildings.windmill.amount;
-    const lightWindmill = gameState.buildings.lightWindmill.amount;
+    const lightWindmills = gameState.buildings.lightWindmill.amount;
     const waterPower = gameState.buildings.powerFromTheRiver.amount;
     const trailers = gameState.buildings.trailer.amount;
 
@@ -1851,6 +1851,7 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
       const baseProduction = solarPanels * 0.35;
       const adjustedProduction = baseProduction * efficiency;
       renewableProductionPerSecond += adjustedProduction;
+      console.log("Solar Production per second: " + renewableProductionPerSecond);
       electricityGenerated += adjustedProduction * timeDiff;
     }
 
@@ -1858,20 +1859,23 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
     const isWindy = windSpeed > 3;
     const isBreezy = windSpeed > 1 && windSpeed <= 3;
     if (isWindy) {
-      const windProduction = (windmills * 0.25) + (lightWindmill * 0.1);
+      const windProduction = (windmills * 0.25);
       renewableProductionPerSecond += windProduction;
+      console.log("Wind Production per second: " + renewableProductionPerSecond);
       electricityGenerated += windProduction * timeDiff;
     }
     
         if (isBreezy) {
-      const windProduction = (windmills * 0.25) + (lightWindmill * 0.1);
-      renewableProductionPerSecond += windProduction;
-      electricityGenerated += windProduction * timeDiff;
+      const breezyWindProduction = (lightWindmills * 0.1);
+      renewableProductionPerSecond += breezyWindProduction;
+      console.log("Breezy Wind Production per second: " + renewableProductionPerSecond);
+      electricityGenerated += breezyWindProduction * timeDiff;
     }
 
     if (waterPower > 0) {
       const waterPowerProduction = waterPower * 3.25;
       renewableProductionPerSecond += waterPowerProduction;
+      console.log("Water Power Production per second: " + renewableProductionPerSecond);
       electricityGenerated += waterPowerProduction * timeDiff;
     }
 
@@ -1919,14 +1923,15 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
       const renewableSufficient = renewableProductionPerSecond >= totalConsumptionPerSecond;
       const batteryPower = totalConsumptionPerSecond *2;
       const batterySufficent = renewableProductionPerSecond + (gameState.electricity - batteryPower) >= totalConsumptionPerSecond;
-      //console.log("totalConsumptionPerSecond:" + totalConsumptionPerSecond);
-      //console.log("gameState.electricity: " + gameState.electricity);
-      //console.log("batteryPower: " + batteryPower);
-      //console.log("batterySufficent: " + batterySufficent);
-      //console.log("renewableSufficient: " + renewableSufficient);
-      //console.log("canSustain: " +canSustain);
-      //console.log("gameState.generatorsDisabled: " + gameState.generatorsDisabled);
-      //console.log("gameState.lastGeneratorStateChange: " + gameState.lastGeneratorStateChange);
+      console.log("renewableProductionPerSecond: " + renewableProductionPerSecond);
+      console.log("totalConsumptionPerSecond:" + totalConsumptionPerSecond);
+      console.log("gameState.electricity: " + gameState.electricity);
+      console.log("batteryPower: " + batteryPower);
+      console.log("batterySufficent: " + batterySufficent);
+      console.log("renewableSufficient: " + renewableSufficient);
+      console.log("canSustain: " +canSustain);
+      console.log("gameState.generatorsDisabled: " + gameState.generatorsDisabled);
+      console.log("gameState.lastGeneratorStateChange: " + gameState.lastGeneratorStateChange);
 
       if (timeSinceLastChange >= minToggleDelay) {
   //if ((renewableSufficient || batterySufficent || !canSustain) && !gameState.generatorsDisabled) {
@@ -1952,7 +1957,7 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
     logEvent(message);
     saveGame();
   } else {
-    //console.log("else");
+    console.log("else");
     //    gameState.generatorsDisabled = false;
     //gameState.lastGeneratorStateChange = now;
     //const message = "Your renewable energy sources do not create sufficient electricity to satisfy your ever growing community's needs. The Makeshift Generators have been turned on again to create sufficient electricity.";
@@ -2436,10 +2441,15 @@ function createElectricityBudgetItem() {
   const isWindy = windSpeed > 3;
   const isBreezy = windSpeed > 1 && windSpeed <= 3;
   const windProduction = isWindy ? (windmills * 0.25) : 0;
-  const windProductionBreezy = isBreezy ? (lightWindmills * 0.05) : 0;
+  const windProductionBreezy = isBreezy ? (lightWindmills * 0.1) : 0;
   const waterPowerProduction = waterPower * 3.25;
 
+  /*console.log("windProduction: " + windProduction);
+  console.log("windProductionBreezy: " + windProductionBreezy);
+  console.log("waterPowerProduction: " + waterPowerProduction);
+  console.log("solarProduction: " + solarProduction); */
   const totalProduction = generatorProduction + solarProduction + windProduction + windProductionBreezy + waterPowerProduction;
+  //console.log("Electricity totalProduction: " + totalProduction);
   let totalConsumption = 0;
   const consumers = [];
   Object.values(gameState.buildings).forEach(building => {
@@ -2468,6 +2478,9 @@ function createElectricityBudgetItem() {
   }
 
   const netRate = totalProduction - totalConsumption;
+  //console.log("Electricity totalProduction: " + totalProduction);
+  //console.log("Electricity totalConsumption: " + totalConsumption);
+  //console.log("Electricity netRate: " + netRate);
   const netClass = netRate > 0 ? 'net-positive' : netRate < 0 ? 'net-negative' : 'net-neutral';
 
   const producers = [];
@@ -2481,7 +2494,7 @@ function createElectricityBudgetItem() {
     producers.push(`<li>Windmills: (+${isWindy ? 0.25 : 0}/s, ${windmills} owned, total +${windProduction.toFixed(2)}/s)${isWindy ? '' : ' (Disabled: Low Wind)'}</li>`);
   }
   if (lightWindmills > 0) {
-    producers.push(`<li>Light Windmills: (+${isBreezy ? 0.05 : 0}/s, ${lightWindmills} owned, total +${windProductionBreezy.toFixed(2)}/s)${isBreezy ? '' : ' (Disabled: Low Wind)'}</li>`);
+    producers.push(`<li>Light Windmills: (+${isBreezy ? 0.1 : 0}/s, ${lightWindmills} owned, total +${windProductionBreezy.toFixed(2)}/s)${isBreezy ? '' : ' (Disabled: Low Wind)'}</li>`);
   }
   if (waterPower > 0) {
     producers.push(`<li>Water Power: (+3.25/s, ${waterPower} owned, total +${waterPowerProduction.toFixed(2)}/s)</li>`);
