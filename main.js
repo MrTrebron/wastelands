@@ -251,7 +251,7 @@ const initialGameState = {
 	largeBatteries: {
       id: 'largeBatteries',
       name: 'Large Batteries',
-      cost: { electronics: 85, scrap: 73 }, //cost: { electronics: 8500, scrap: 7380 },
+      cost: { electronics: 850, scrap: 730 }, //cost: { electronics: 8500, scrap: 7380 },
       raises: 'electricity',
       raisesBy: 250,
       amount: 0,
@@ -260,7 +260,7 @@ const initialGameState = {
     extraLargeBatteries: {
       id: 'extraLargeBatteries',
       name: 'Extra Large Batteries',
-      cost: { electronics: 15000, scrap: 1500 },
+      cost: { electronics: 1500, scrap: 1500 },
       raises: 'electricity',
       raisesBy: 1000,
       amount: 0,
@@ -3052,7 +3052,7 @@ function createBuildingCard(building) {
   );
 
   const canAffordHundred = Object.entries(building.cost).every(
-    ([resourceId, cost]) => gameState.resources[resourceId].amount >= cost * 10
+    ([resourceId, cost]) => gameState.resources[resourceId].amount >= cost * 100
   );
 
   const costList = Object.entries(building.cost)
