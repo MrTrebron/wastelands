@@ -4481,7 +4481,7 @@ if (!gameState.achievements) {
 if (!gameState.lastAchievementCheck) {
   gameState.lastAchievementCheck = null;
 }
-  
+  recalculateMaxElectricity();
   updateUI();
 
   if (!gameState.hasSeenWelcome) {
