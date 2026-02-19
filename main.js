@@ -4835,6 +4835,17 @@ document.getElementById('backgroundStoryButton').addEventListener('click', () =>
   showNotification(backgroundStory, 'large');
 });
 
+function recalculateMaxElectricity() {
+  let batteries = ["upgradeBatteries", "largeBatteries", "extraLargeBatteries"];
+  let maxBatteryCapacity = 0
+  forEach (battery in batteries) {
+    let raiseBy = gameState.improvements[battery].raisesBy;
+    let amount = gameState.improvements[battery].amount;
+    maxBatteryCapacity += raiseBy * maxBatteryCapacity;
+  }
+  gameState.maxElectricity = maxBatteryCapacity;
+}
+
 // Load saved game
 loadGame();
 
