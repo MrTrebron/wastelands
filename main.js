@@ -4852,7 +4852,7 @@ function recalculateMaxElectricity() {
   }
 
   // Dem Ressourcen-Objekt zuweisen (laut deiner JSON-Struktur)
-  gameState.resources.electricity.max = maxBatteryCapacity;
+  gameState.maxElectricity = maxBatteryCapacity;
 }
 
 
