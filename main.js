@@ -4836,15 +4836,25 @@ document.getElementById('backgroundStoryButton').addEventListener('click', () =>
 });
 
 function recalculateMaxElectricity() {
-  let batteries = ["upgradeBatteries", "largeBatteries", "extraLargeBatteries"];
-  let maxBatteryCapacity = 0
-  forEach (battery in batteries) {
+  const batteries = ["upgradeBatteries", "largeBatteries", "extraLargeBatteries"];
+  let maxBatteryCapacity = 0;
+
+  // Korrekte Syntax: for...of statt forEach
+  for (const battery of batteries) {
+    // Falls ein Upgrade noch nicht existiert (undefined), überspringen
+    if (!gameState.improvements[battery]) continue;
+
     let raiseBy = gameState.improvements[battery].raisesBy;
     let amount = gameState.improvements[battery].amount;
-    maxBatteryCapacity += raiseBy * maxBatteryCapacity;
+    
+    // Logik-Fehler korrigiert: Du musst (Wert * Anzahl) ADDIEREN
+    maxBatteryCapacity += raiseBy * amount;
   }
-  gameState.maxElectricity = maxBatteryCapacity;
+
+  // Dem Ressourcen-Objekt zuweisen (laut deiner JSON-Struktur)
+  gameState.resources.electricity.max = maxBatteryCapacity;
 }
+
 
 // Load saved game
 loadGame();
