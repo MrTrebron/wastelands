@@ -1957,7 +1957,7 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
     logEvent(message);
     saveGame();
   } else {
-    console.log("else");
+    //console.log("else");
     //    gameState.generatorsDisabled = false;
     //gameState.lastGeneratorStateChange = now;
     //const message = "Your renewable energy sources do not create sufficient electricity to satisfy your ever growing community's needs. The Makeshift Generators have been turned on again to create sufficient electricity.";
