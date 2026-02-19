@@ -2743,6 +2743,74 @@ function improve(improvementId) {
   saveGame();
 }
 
+function improveMultiple(improvementId, amount) {
+  const improvement = gameState.improvements[improvementId];
+  
+  for (let i = 1; i <= amount; i++) {
+  for (const [resourceId, cost] of Object.entries(improvement.cost)) {
+    if (resourceId === 'researchPoints') {
+      if (gameState.researchPoints < cost) return;
+    } else if (resourceId === 'adminPoints') {
+      if (gameState.adminPoints < cost) return;
+    } else {
+      if (gameState.resources[resourceId].amount < cost) return;
+    }
+  }
+
+  Object.entries(improvement.cost).forEach(([resourceId, cost]) => {
+    if (resourceId === 'researchPoints') {
+      gameState.researchPoints -= cost;
+      gameState.resources.researchPoints.amount = gameState.researchPoints;
+    } else if (resourceId === 'adminPoints') {
+      gameState.adminPoints -= cost;
+      gameState.resources.adminPoints.amount = gameState.adminPoints;
+    } else {
+      gameState.resources[resourceId].amount -= cost;
+    }
+  });
+
+  improvement.amount += 1;
+
+  if (improvement.raisesMultiple) {
+  Object.entries(improvement.raisesMultiple).forEach(([resourceId, increase]) => {
+    if (resourceId === 'weapons') {
+      gameState.maxWeapons += increase;
+      gameState.resources.weapons.max = gameState.maxWeapons;
+    } else if (resourceId === 'soldiers') {
+      gameState.maxSoldiers += increase;
+      gameState.resources.soldiers.max = gameState.maxSoldiers;
+    } else {
+      const resource = gameState.resources[resourceId];
+      resource.max += increase;
+    }
+    });
+	} else {
+    if (improvement.raises === 'electricity') {
+      gameState.maxElectricity += improvement.raisesBy;
+    } else if (improvement.raises === 'researchPoints') {
+      gameState.maxResearchPoints += improvement.raisesBy;
+    } else if (improvement.raises === 'adminPoints') {
+      gameState.maxAdminPoints += improvement.raisesBy;
+    } else if (improvement.raises === 'maxSoldiers') {
+      gameState.maxSoldiers += improvement.raisesBy;
+      gameState.resources.soldiers.max = gameState.maxSoldiers;
+    } else if (improvement.raises === 'maxWeapons') {
+      gameState.maxWeapons += improvement.raisesBy;
+      gameState.resources.weapons.max = gameState.maxWeapons;
+    } else if (improvement.raises === 'defensePower') { // New case
+      gameState.resources.defensePower.amount += improvement.raisesBy;
+    } else {
+      const resourceId = improvement.raises;
+      const resource = gameState.resources[resourceId];
+      resource.max += improvement.raisesBy;
+    }
+  }
+}
+
+  updateUI();
+  saveGame();
+}
+
 function build(buildingId) {
   const building = gameState.buildings[buildingId];
   for (const [resourceId, cost] of Object.entries(building.cost)) {
@@ -3252,6 +3320,28 @@ function createImprovementsCard(improvement) {
     }
   );
 
+    const canAfford10 = Object.entries(improvement.cost).every(
+    ([resourceId, cost]) => {
+      if (resourceId === 'researchPoints') {
+        return gameState.researchPoints >= cost *10;
+      } else if (resourceId === 'adminPoints') {
+        return gameState.adminPoints >= cost * 10;
+      }
+      return gameState.resources[resourceId].amount >= cost * 10;
+    }
+  );
+
+      const canAfford100 = Object.entries(improvement.cost).every(
+    ([resourceId, cost]) => {
+      if (resourceId === 'researchPoints') {
+        return gameState.researchPoints >= cost *100;
+      } else if (resourceId === 'adminPoints') {
+        return gameState.adminPoints >= cost * 10;
+      }
+      return gameState.resources[resourceId].amount >= cost * 100;
+    }
+  );
+
   const costList = Object.entries(improvement.cost)
     .map(([resourceId, cost]) => {
       let affordable;
@@ -3294,6 +3384,20 @@ function createImprovementsCard(improvement) {
         ${canAfford ? '' : 'disabled'}
       >
         Build
+      </button>
+            <button 
+        class="btn ${canAfford10 ? '' : 'disabled'}"
+        onclick="window.improveMultiple('${improvement.id}',10)"
+        ${canAfford10 ? '' : 'disabled'}
+      >
+        Build 10
+      </button>
+                  <button 
+        class="btn ${canAfford100 ? '' : 'disabled'}"
+        onclick="window.improveMultiple('${improvement.id}',100)"
+        ${canAfford100 ? '' : 'disabled'}
+      >
+        Build 100
       </button>
     </div>
   `;
