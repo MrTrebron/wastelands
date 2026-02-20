@@ -3166,26 +3166,9 @@ function createBuildingCard(building) {
       >
         Build
       </button>
-      /* ${canAffordTen && isBuildable ? `
-        <button 
-          class="btn"
-          onclick="window.buildMultiple('${building.id}', 10)"
-        >
-          Build 10
-        </button>
-      ` : ''}
-      ${canAffordHundred && isBuildable ? `
-        <button 
-          class="btn"
-          onclick="window.buildMultiple('${building.id}', 100)"
-        >
-          Build 100
-        </button>
-		      </button>
-      ` : ''} */
 	  	  <button 
         class="btn ${canAffordTen ? '' : 'disabled'}"
-        onclick="window.buildMultiple('${building.id}',100)"
+        onclick="window.buildMultiple('${building.id}',10)"
         ${canAffordTen ? '' : 'disabled'}
       >
         Build 10
