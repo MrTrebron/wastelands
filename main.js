@@ -3188,7 +3188,7 @@ function createBuildingCard(building) {
         onclick="window.buildMultiple('${building.id}',100)"
         ${canAffordHundred ? '' : 'disabled'}
       >
-        Build 100
+        Build 100_
       </button>
     </div>
   `;
