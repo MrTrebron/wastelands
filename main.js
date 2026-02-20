@@ -2494,7 +2494,7 @@ function createElectricityBudgetItem() {
     producers.push(`<li>Windmills: (+${isWindy ? 0.25 : 0}/s, ${windmills} owned, total +${windProduction.toFixed(2)}/s)${isWindy ? '' : ' (Disabled: Low Wind)'}</li>`);
   }
   if (lightWindmills > 0) {
-    producers.push(`<li>Light Windmills: (+${isBreezy ? 0.1 : 0}/s, ${lightWindmills} owned, total +${windProductionBreezy.toFixed(2)}/s)${isBreezy ? '' : ' (Disabled: Low Wind)'}</li>`);
+    producers.push(`<li>Light Windmills: (+${isBreezy ? 0.1 : 0}/s, ${lightWindmills} owned, total +${windProductionBreezy.toFixed(2)}/s)${isBreezy ? '' : ' (Disabled: Low or to fast Wind)'}</li>`);
   }
   if (waterPower > 0) {
     producers.push(`<li>Water Power: (+3.25/s, ${waterPower} owned, total +${waterPowerProduction.toFixed(2)}/s)</li>`);
