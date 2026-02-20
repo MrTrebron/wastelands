@@ -18,16 +18,16 @@ const initialGameState = {
       max: 100,
       perSecond: 0
     },
-    wood: {
-      id: 'wood',
-      name: 'Wood',
+    scrap: {
+      id: 'scrap',
+      name: 'Scrap',
       amount: 0,
       max: 100,
       perSecond: 0
     },
-    scrap: {
-      id: 'scrap',
-      name: 'Scrap',
+	      wood: {
+      id: 'wood',
+      name: 'Wood',
       amount: 0,
       max: 100,
       perSecond: 0
