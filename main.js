@@ -251,20 +251,20 @@ const initialGameState = {
 	largeBatteries: {
       id: 'largeBatteries',
       name: 'Large Batteries',
-      cost: { electronics: 850, scrap: 730 }, //cost: { electronics: 8500, scrap: 7380 },
+      cost: { electronics: 500, scrap: 750 },
       raises: 'electricity',
       raisesBy: 250,
       amount: 0,
-      description: 'Bigger and better batteries store more electricity. And cost more to build.'
+      description: 'Bigger and better batteries store more electricity. Up to 250. And cost more to build.'
     },
     extraLargeBatteries: {
       id: 'extraLargeBatteries',
       name: 'Extra Large Batteries',
-      cost: { electronics: 1500, scrap: 1500 },
+      cost: { electronics: 2000, scrap: 3000 },
       raises: 'electricity',
       raisesBy: 1000,
       amount: 0,
-      description: 'Extra bigger and better batteries store more electricity. And cost more to build.'
+      description: 'Extra bigger and better batteries store more electricity. Up to 1000. And cost more to build.'
     },
   },
   buildings: {
