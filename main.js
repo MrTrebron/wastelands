@@ -3182,14 +3182,14 @@ function createBuildingCard(building) {
           Build 100
         </button>
 		      </button>
-                  <button 
+      ` : ''}
+	  <button 
         class="btn ${canAffordHundred ? '' : 'disabled'}"
         onclick="window.buildMultiple('${building.id}',100)"
         ${canAffordHundred ? '' : 'disabled'}
       >
         Build 100
       </button>
-      ` : ''}
     </div>
   `;
 }
