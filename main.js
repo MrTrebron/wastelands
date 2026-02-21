@@ -1857,7 +1857,7 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
 
     const windSpeed = gameState.weather.windSpeed || 0;
     const isWindy = windSpeed > 3;
-    const isBreezy = windSpeed > 1.5 && windSpeed <= 3;
+    const isBreezy = windSpeed > 1.5 && windSpeed <= 6;
     if (isWindy) {
       const windProduction = (windmills * 0.25);
       renewableProductionPerSecond += windProduction;
