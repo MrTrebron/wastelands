@@ -2439,7 +2439,7 @@ function createElectricityBudgetItem() {
 
   const windSpeed = gameState.weather.windSpeed || 0;
   const isWindy = windSpeed > 3;
-  const isBreezy = windSpeed > 1.5 && windSpeed <= 3;
+  const isBreezy = windSpeed > 1.5 && windSpeed <= 6;
   const windProduction = isWindy ? (windmills * 0.25) : 0;
   const windProductionBreezy = isBreezy ? (lightWindmills * 0.1) : 0;
   const waterPowerProduction = waterPower * 3.25;
