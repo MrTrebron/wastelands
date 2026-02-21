@@ -387,7 +387,7 @@ const initialGameState = {
       cost: { electronics: 250, scrap: 300 },
       provides: { electricity: 0.1 },
       amount: 0,
-      description: 'Light windmills provide electricity. As long as there is wind (at least 1.5m/s and below 3.0m/s).'
+      description: 'Light windmills provide electricity. As long as there is wind (at least 1.5m/s and below 6.0m/s).'
     },
     desal: {
       id: 'desal',
