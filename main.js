@@ -1921,7 +1921,7 @@ if (now - gameState.lastAchievementCheck >= 10000) { // Check every 10 seconds
 
       const totalConsumptionPerSecond = totalElectricityConsumed / timeDiff;
       const renewableSufficient = renewableProductionPerSecond >= totalConsumptionPerSecond;
-      const batteryPower = totalConsumptionPerSecond *2;
+      const batteryPower = totalConsumptionPerSecond *3;
       const batterySufficent = renewableProductionPerSecond + (gameState.electricity - batteryPower) >= totalConsumptionPerSecond;
       //console.log("renewableProductionPerSecond: " + renewableProductionPerSecond);
       //console.log("totalConsumptionPerSecond:" + totalConsumptionPerSecond);
