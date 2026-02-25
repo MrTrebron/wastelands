@@ -4875,7 +4875,7 @@ document.getElementById('backgroundStoryButton').addEventListener('click', () =>
 });
 
 function recalculateMaxElectricity() {
-  const batteries = ["upgradeBatteries", "largeBatteries", "extraLargeBatteries"], "ultraLargeBatteries";
+  const batteries = ["upgradeBatteries", "largeBatteries", "extraLargeBatteries", "ultraLargeBatteries"];
   let maxBatteryCapacity = 0;
 
   // Korrekte Syntax: for...of statt forEach
