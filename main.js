@@ -266,6 +266,15 @@ const initialGameState = {
       amount: 0,
       description: 'Extra bigger and better batteries store more electricity. Up to 1000. And cost more to build.'
     },
+	  ultraLargeBatteries: {
+      id: 'ultraLargeBatteries',
+      name: 'Ultra Large Batteries',
+      cost: { electronics: 20000, scrap: 30000 },
+      raises: 'electricity',
+      raisesBy: 1000,
+      amount: 0,
+      description: 'Ultra bigger and better batteries store more electricity. Up to 10000. And cost more to build.'
+    },
   },
   buildings: {
     garden: {
@@ -3309,7 +3318,10 @@ function createImprovementsCard(improvement) {
   if (improvement.id === 'extraLargeBatteries' && gameState.improvements.largeBatteries.amount < 75) {
     return '';
   }
-  
+    // Hide Ultra Large Batteries until 75 Large Battieres are built
+  if (improvement.id === 'ultraLargeBatteries' && gameState.improvements.extraLargeBatteries.amount < 75) {
+    return '';
+  }
   
   // Gate Military Academy
   if (improvement.id === 'militaryAcademy' && 
@@ -4863,7 +4875,7 @@ document.getElementById('backgroundStoryButton').addEventListener('click', () =>
 });
 
 function recalculateMaxElectricity() {
-  const batteries = ["upgradeBatteries", "largeBatteries", "extraLargeBatteries"];
+  const batteries = ["upgradeBatteries", "largeBatteries", "extraLargeBatteries"], "ultraLargeBatteries";
   let maxBatteryCapacity = 0;
 
   // Korrekte Syntax: for...of statt forEach
