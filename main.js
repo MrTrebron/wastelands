@@ -271,7 +271,7 @@ const initialGameState = {
       name: 'Ultra Large Batteries',
       cost: { electronics: 20000, scrap: 30000 },
       raises: 'electricity',
-      raisesBy: 1000,
+      raisesBy: 10000,
       amount: 0,
       description: 'Ultra bigger and better batteries store more electricity. Up to 10000. And cost more to build.'
     },
