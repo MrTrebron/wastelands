@@ -3345,9 +3345,20 @@ function createImprovementsCard(improvement) {
       if (resourceId === 'researchPoints') {
         return gameState.researchPoints >= cost *100;
       } else if (resourceId === 'adminPoints') {
-        return gameState.adminPoints >= cost * 10;
+        return gameState.adminPoints >= cost * 100;
       }
       return gameState.resources[resourceId].amount >= cost * 100;
+    }
+  );
+
+	      const canAfford1000 = Object.entries(improvement.cost).every(
+    ([resourceId, cost]) => {
+      if (resourceId === 'researchPoints') {
+        return gameState.researchPoints >= cost *1000;
+      } else if (resourceId === 'adminPoints') {
+        return gameState.adminPoints >= cost * 1000;
+      }
+      return gameState.resources[resourceId].amount >= cost * 1000;
     }
   );
 
@@ -3407,6 +3418,13 @@ function createImprovementsCard(improvement) {
         ${canAfford100 ? '' : 'disabled'}
       >
         Build 100
+      </button>
+	                    <button 
+        class="btn ${canAfford1000 ? '' : 'disabled'}"
+        onclick="window.improveMultiple('${improvement.id}',1000)"
+        ${canAfford1000 ? '' : 'disabled'}
+      >
+        Build 1000
       </button>
     </div>
   `;
