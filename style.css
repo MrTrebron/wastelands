@@ -901,7 +901,7 @@ details>summary span.icon {
   width: 24px;
   height: 24px;
   transition: all 0.3s;
-  /*margin-left: auto;*/
+  /* margin-left: auto; */
 }
 
 details[open] summary span.icon {
@@ -911,6 +911,8 @@ details[open] summary span.icon {
 summary {
   display: flex;
   cursor: pointer;
+  font-size: larger;
+  font-weight: bolder;
 }
 
 
